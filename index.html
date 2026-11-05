@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Математикийн Мастер 3.0 - Ахлах Анги</title>
+    <title>Математикийн Мастер 3.0</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- MathJax for rendering proper mathematical formulas like x_1 and x^2 -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -35,7 +48,6 @@
             flex-direction: column;
         }
 
-        /* Modal */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -69,7 +81,6 @@
             outline: none;
         }
 
-        /* Header */
         header {
             background: var(--card-bg);
             padding: 1rem 2rem;
@@ -100,7 +111,6 @@
             border: 1px solid #334155;
         }
 
-        /* Navigation Tabs */
         .nav-tabs {
             display: flex;
             justify-content: center;
@@ -127,7 +137,6 @@
             color: white;
         }
 
-        /* Container */
         .container {
             max-width: 1000px;
             margin: 2rem auto;
@@ -136,14 +145,9 @@
             flex: 1;
         }
 
-        .view-section {
-            display: none;
-        }
-        .view-section.active {
-            display: block;
-        }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
 
-        /* Home View Cards */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -165,7 +169,6 @@
             border-color: var(--primary);
         }
 
-        /* Quiz UI */
         .level-select-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -223,11 +226,8 @@
             text-align: left;
         }
 
-        .option-btn:hover {
-            border-color: var(--primary);
-        }
+        .option-btn:hover { border-color: var(--primary); }
 
-        /* Step-by-Step Explanation Box */
         .detailed-explanation {
             margin-top: 1.5rem;
             background: #090d16;
@@ -248,7 +248,7 @@
 
         .step-item {
             margin-bottom: 0.8rem;
-            line-height: 1.5;
+            line-height: 1.6;
             color: #e2e8f0;
         }
 
@@ -257,7 +257,6 @@
             font-weight: bold;
         }
 
-        /* Formula Sheet */
         .formula-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -273,7 +272,6 @@
             margin-bottom: 0.8rem;
         }
 
-        /* News Cards */
         .news-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -343,13 +341,12 @@
         <button class="nav-btn" onclick="switchView('newsView', this)"><i class="fa-solid fa-newspaper"></i> Сонин сайхан</button>
     </div>
 
-    <!-- Main Container -->
     <div class="container">
 
         <!-- 1. HOME VIEW -->
         <div id="homeView" class="view-section active">
             <div style="text-align: center; margin-bottom: 2rem;">
-                <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">Математикийн ертөнцөд тайвтай морил!</h1>
+                <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">Математикийн ертөнцөд морил!</h1>
                 <p style="color: var(--text-muted);">Өөрийн түвшинд тохирсон бодлогыг бодож, оноо цуглуулан мэдлэгээ тэлээрэй.</p>
             </div>
 
@@ -385,14 +382,12 @@
             <div class="quiz-card">
                 <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem;">
                     <span id="quizLvlTag">Сэдэв: 10-р анги</span>
-                    <span>Arial Форматтай Тоон бичиглэл</span>
                 </div>
 
                 <div class="problem-box" id="problemText">Бодлого ачаалж байна...</div>
 
                 <div class="options-grid" id="optionsGrid"></div>
 
-                <!-- Detailed Step-by-Step Explanation -->
                 <div class="detailed-explanation" id="explanationBox">
                     <div class="explanation-header">
                         <i class="fa-solid fa-circle-check"></i> Алхам Алхмаар Дэлгэрэнгүй Бодолт:
@@ -412,35 +407,35 @@
             
             <div class="formula-card">
                 <div class="formula-title">1. Тригонометр (Үндсэн адилтгалууд)</div>
-                <p>• sin^2(x) + cos^2(x) = 1</p>
-                <p>• tan(x) = sin(x) / cos(x)</p>
-                <p>• sin(2x) = 2 * sin(x) * cos(x)</p>
-                <p>• cos(2x) = cos^2(x) - sin^2(x)</p>
+                <p>• $\sin^2(x) + \cos^2(x) = 1$</p>
+                <p>• $\tan(x) = \frac{\sin(x)}{\cos(x)}$</p>
+                <p>• $\sin(2x) = 2\sin(x)\cos(x)$</p>
+                <p>• $\cos(2x) = \cos^2(x) - \sin^2(x)$</p>
             </div>
 
             <div class="formula-card">
                 <div class="formula-title">2. Логарифм ба Илтгэгч</div>
-                <p>• log_a(b * c) = log_a(b) + log_a(c)</p>
-                <p>• log_a(b / c) = log_a(b) - log_a(c)</p>
-                <p>• log_a(b^k) = k * log_a(b)</p>
-                <p>• a^(log_a(b)) = b</p>
+                <p>• $\log_a(b \cdot c) = \log_a(b) + \log_a(c)$</p>
+                <p>• $\log_a(\frac{b}{c}) = \log_a(b) - \log_a(c)$</p>
+                <p>• $\log_a(b^k) = k \cdot \log_a(b)$</p>
+                <p>• $a^{\log_a(b)} = b$</p>
             </div>
 
             <div class="formula-card">
-                <div class="formula-title">3. Уламжлал (Elementary Derivatives)</div>
-                <p>• (x^n)' = n * x^(n-1)</p>
-                <p>• (sin x)' = cos x</p>
-                <p>• (cos x)' = -sin x</p>
-                <p>• (e^x)' = e^x</p>
-                <p>• (ln x)' = 1 / x</p>
+                <div class="formula-title">3. Уламжлал</div>
+                <p>• $(x^n)' = n \cdot x^{n-1}$</p>
+                <p>• $(\sin x)' = \cos x$</p>
+                <p>• $(\cos x)' = -\sin x$</p>
+                <p>• $(e^x)' = e^x$</p>
+                <p>• $(\ln x)' = \frac{1}{x}$</p>
             </div>
 
             <div class="formula-card">
-                <div class="formula-title">4. Эх функц ба Интеграл</div>
-                <p>• ∫ x^n dx = (x^(n+1)) / (n+1) + C  (n ≠ -1)</p>
-                <p>• ∫ (1/x) dx = ln|x| + C</p>
-                <p>• ∫ sin(x) dx = -cos(x) + C</p>
-                <p>• ∫ cos(x) dx = sin(x) + C</p>
+                <div class="formula-title">4. Интеграл</div>
+                <p>• $\int x^n dx = \frac{x^{n+1}}{n+1} + C \quad (n \neq -1)$</p>
+                <p>• $\int \frac{1}{x} dx = \ln|x| + C$</p>
+                <p>• $\int \sin(x) dx = -\cos(x) + C$</p>
+                <p>• $\int \cos(x) dx = \sin(x) + C$</p>
             </div>
         </div>
 
@@ -456,7 +451,7 @@
             </div>
 
             <div class="news-card">
-                <div class="news-title">🥧 Пи (π) тооны нууц ба хязгааргүй чанар</div>
+                <div class="news-title">🥧 Пи ($\pi$) тооны нууц ба хязгааргүй чанар</div>
                 <p style="color: #cbd5e1; line-height: 1.6;">
                     Пи тоо нь тойргийн уртыг түүний диаметрт харьцуулсан харьцаа юм. Пи тооны таслалаас хойших цифрүүд хэзээ ч давтагдахгүй бөгөөд хязгааргүй үргэлжилдэг. Супер компьютерүүд одоогоор 100 их наяд гаруй цифрийг нь бодож олсон ч төгсгөл нь олдоогүй байна!
                 </p>
@@ -473,93 +468,89 @@
     </div>
 
     <script>
-        // Expanded Problem Set with Detailed Step-by-Step Solutions
+        // Questions with LaTeX formatting for proper rendering of x_1 and x^2
         const questionsDB = {
-            1: [ // 10th Grade
+            1: [
                 {
-                    q: "sin(30°) + cos(60°) - tan(45°) илэрхийллийн утгыг ол.",
-                    opts: ["0", "1", "1/2", "2"],
+                    q: "$\\sin(30^\\circ) + \\cos(60^\\circ) - \\tan(45^\\circ)$ илэрхийллийн утгыг ол.",
+                    opts: ["$0$", "$1$", "$\\frac{1}{2}$", "$2$"],
                     a: 0,
                     steps: [
-                        { t: "Өгөгдөл ба Томьёо:", d: "Тригонометр үндсэн өнцгүүдийн утга: sin(30°) = 1/2, cos(60°) = 1/2, tan(45°) = 1." },
-                        { t: "Алхам 1:", d: "Олсон утгуудыг илэрхийлэлд орлуулна: (1/2) + (1/2) - 1" },
-                        { t: "Алхам 2:", d: "(1/2 + 1/2) = 1 тул 1 - 1 = 0 болно." },
-                        { t: "Эцсийн хариу:", d: "Зөв хариулт: 0" }
+                        { t: "Өгөгдөл ба Томьёо:", d: "Тригонометрийн үндсэн өнцгүүд: $\\sin(30^\\circ) = \\frac{1}{2}$, $\\cos(60^\\circ) = \\frac{1}{2}$, $\\tan(45^\\circ) = 1$." },
+                        { t: "Алхам 1:", d: "Утгуудыг байранд нь орлуулбал: $\\frac{1}{2} + \\frac{1}{2} - 1$" },
+                        { t: "Алхам 2:", d: "$\\left(\\frac{1}{2} + \\frac{1}{2}\\right) = 1$ тул $1 - 1 = 0$ болно." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $0$" }
                     ]
                 },
                 {
-                    q: "2^(x + 1) = 32 бол x-ийн утгыг ол.",
-                    opts: ["x = 4", "x = 5", "x = 3", "x = 6"],
+                    q: "$2^{x + 1} = 32$ бол $x$-ийн утгыг ол.",
+                    opts: ["$x = 4$", "$x = 5$", "$x = 3$", "$x = 6$"],
                     a: 0,
                     steps: [
-                        { t: "Өгөгдөл:", d: "Илтгэгч тэгшитгэл: 2^(x + 1) = 32" },
-                        { t: "Алхам 1:", d: "32 тоог 2-ын суурьтай зэрэгт шилжүүлбэл: 32 = 2^5." },
-                        { t: "Алхам 2:", d: "Сууриуд адилхан тул илтгэгчдийг тэнцүүлнэ: x + 1 = 5." },
-                        { t: "Алхам 3:", d: "x = 5 - 1 => x = 4." },
-                        { t: "Эцсийн хариу:", d: "Зөв хариулт: x = 4" }
+                        { t: "Өгөгдөл:", d: "Илтгэгч тэгшитгэл: $2^{x + 1} = 32$" },
+                        { t: "Алхам 1:", d: "$32$-ийг 2-ын зэрэгт болговол: $32 = 2^5$." },
+                        { t: "Алхам 2:", d: "Илтгэгчдийг тэнцүүлбэл: $x + 1 = 5$." },
+                        { t: "Алхам 3:", d: "$x = 5 - 1 \\Rightarrow x = 4$." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $x = 4$" }
                     ]
                 },
                 {
-                    q: "x^2 - 5x + 6 = 0 квадрат тэгшитгэлийн шийдүүдийг ол.",
-                    opts: ["x1 = 2, x2 = 3", "x1 = -2, x2 = -3", "x1 = 1, x2 = 6", "x1 = -1, x2 = 5"],
+                    q: "$x^2 - 5x + 6 = 0$ квадрат тэгшитгэлийн шийдүүдийг ол.",
+                    opts: ["$x_1 = 2, x_2 = 3$", "$x_1 = -2, x_2 = -3$", "$x_1 = 1, x_2 = 6$", "$x_1 = -1, x_2 = 5$"],
                     a: 0,
                     steps: [
-                        { t: "Өгөгдөл ба Томьёо:", d: "Виетийн теорем: x1 + x2 = 5 болон x1 * x2 = 6." },
-                        { t: "Алхам 1:", d: "Үржвэр нь 6, нийлбэр нь 5 байх хоёр тоог олно." },
-                        { t: "Алхам 2:", d: "2 ба 3 тоонуудын үржвэр 2*3=6, нийлбэр 2+3=5 тул шийдүүд мөн." },
-                        { t: "Эцсийн хариу:", d: "Зөв хариулт: x1 = 2, x2 = 3" }
+                        { t: "Өгөгдөл ба Томьёо:", d: "Виетийн теорем: $x_1 + x_2 = 5$ болон $x_1 \\cdot x_2 = 6$." },
+                        { t: "Алхам 1:", d: "Үржвэр нь 6, нийлбэр нь 5 байх тоонууд нь 2 ба 3 юм." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $x_1 = 2, x_2 = 3$" }
                     ]
                 }
             ],
-            2: [ // 11th Grade
+            2: [
                 {
-                    q: "log_2(x) + log_2(4) = 5 бол x-ийн утгыг ол.",
-                    opts: ["x = 8", "x = 16", "x = 32", "x = 4"],
+                    q: "$\\log_2(x) + \\log_2(4) = 5$ бол $x$-ийн утгыг ол.",
+                    opts: ["$x = 8$", "$x = 16$", "$x = 32$", "$x = 4$"],
                     a: 0,
                     steps: [
-                        { t: "Өгөгдөл ба Томьёо:", d: "Логарифмын чанар: log_a(b) + log_a(c) = log_a(b * c)" },
-                        { t: "Алхам 1:", d: "Зүүн талыг нэгтгэвэл: log_2(4 * x) = 5." },
-                        { t: "Алхам 2:", d: "Логарифмын тодорхойлолтоор: 4 * x = 2^5 => 4 * x = 32." },
-                        { t: "Алхам 3:", d: "x = 32 / 4 => x = 8." },
-                        { t: "Эцсийн хариу:", d: "Зөв хариулт: x = 8" }
+                        { t: "Өгөгдөл ба Томьёо:", d: "Логарифмын чанар: $\\log_a(b) + \\log_a(c) = \\log_a(b \\cdot c)$" },
+                        { t: "Алхам 1:", d: "$\\log_2(4x) = 5$" },
+                        { t: "Алхам 2:", d: "$4x = 2^5 \\Rightarrow 4x = 32$" },
+                        { t: "Алхам 3:", d: "$x = \\frac{32}{4} = 8$" },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $x = 8$" }
                     ]
                 },
                 {
-                    q: "f(x) = 4x^3 - 2x^2 + 7 функцийн уламжлал f'(x)-ийг ол.",
-                    opts: ["12x^2 - 4x", "12x^2 - 4x + 7", "4x^2 - 2x", "8x^2 - 4x"],
+                    q: "$f(x) = 4x^3 - 2x^2 + 7$ функцийн уламжлал $f'(x)$-ийг ол.",
+                    opts: ["$12x^2 - 4x$", "$12x^2 - 4x + 7$", "$4x^2 - 2x$", "$8x^2 - 4x$"],
                     a: 0,
                     steps: [
-                        { t: "Өгөгдөл ба Томьёо:", d: "Зэрэгт функцийн уламжлал: (x^n)' = n * x^(n-1), сул тооны уламжлал 0 байдаг." },
-                        { t: "Алхам 1:", d: "(4x^3)' = 4 * 3 * x^2 = 12x^2." },
-                        { t: "Алхам 2:", d: "(-2x^2)' = -2 * 2 * x = -4x." },
-                        { t: "Алхам 3:", d: "(7)' = 0." },
-                        { t: "Эцсийн хариу:", d: "f'(x) = 12x^2 - 4x" }
+                        { t: "Өгөгдөл ба Томьёо:", d: "$(x^n)' = n \\cdot x^{n-1}$" },
+                        { t: "Алхам 1:", d: "$(4x^3)' = 12x^2$" },
+                        { t: "Алхам 2:", d: "$(-2x^2)' = -4x$" },
+                        { t: "Алхам 3:", d: "Сул тооны уламжлал: $(7)' = 0$" },
+                        { t: "Эцсийн хариу:", d: "$f'(x) = 12x^2 - 4x$" }
                     ]
                 }
             ],
-            3: [ // 12th Grade & EESH
+            3: [
                 {
-                    q: "∫ (3x^2 + 4x) dx тодорхойгүй интегралыг бод.",
-                    opts: ["x^3 + 2x^2 + C", "3x^3 + 4x^2 + C", "6x + 4 + C", "x^3 + 4x^2 + C"],
+                    q: "$\\int (3x^2 + 4x) dx$ интегралыг бод.",
+                    opts: ["$x^3 + 2x^2 + C$", "$3x^3 + 4x^2 + C$", "$6x + 4 + C$", "$x^3 + 4x^2 + C$"],
                     a: 0,
                     steps: [
-                        { t: "Өгөгдөл ба Томьёо:", d: "Интегралын үндсэн томьёо: ∫ x^n dx = x^(n+1) / (n+1) + C" },
-                        { t: "Алхам 1:", d: "∫ 3x^2 dx = 3 * (x^3 / 3) = x^3." },
-                        { t: "Алхам 2:", d: "∫ 4x dx = 4 * (x^2 / 2) = 2x^2." },
-                        { t: "Алхам 3:", d: "Нийлбэрийг бичээд C тогтмолыг нэмнэ." },
-                        { t: "Эцсийн хариу:", d: "Зөв хариулт: x^3 + 2x^2 + C" }
+                        { t: "Өгөгдөл ба Томьёо:", d: "$\\int x^n dx = \\frac{x^{n+1}}{n+1} + C$" },
+                        { t: "Алхам 1:", d: "$\\int 3x^2 dx = x^3$" },
+                        { t: "Алхам 2:", d: "$\\int 4x dx = 2x^2$" },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $x^3 + 2x^2 + C$" }
                     ]
                 },
                 {
-                    q: "5 элементтэй олонлогтоос 2 элементийг сонгох хослолын тоо C(5,2)-ийг ол.",
-                    opts: ["10", "20", "60", "5"],
+                    q: "$C(5,2)$ хослолын тоог ол.",
+                    opts: ["$10$", "$20$", "$60$", "$5$"],
                     a: 0,
                     steps: [
-                        { t: "Өгөгдөл ба Томьёо:", d: "Хослолын томьёо: C(n, k) = n! / (k! * (n - k)!)" },
-                        { t: "Алхам 1:", d: "C(5,2) = 5! / (2! * 3!)" },
-                        { t: "Алхам 2:", d: "5! / 3! = 5 * 4 = 20." },
-                        { t: "Алхам 3:", d: "20 / 2! = 20 / 2 = 10." },
-                        { t: "Эцсийн хариу:", d: "Зөв хариулт: 10" }
+                        { t: "Өгөгдөл ба Томьёо:", d: "$C(n, k) = \\frac{n!}{k!(n-k)!}$" },
+                        { t: "Алхам 1:", d: "$C(5,2) = \\frac{5!}{2! \\cdot 3!} = \\frac{5 \\cdot 4}{2} = 10$" },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $10$" }
                     ]
                 }
             ]
@@ -604,6 +595,10 @@
 
             document.getElementById(viewId).classList.add('active');
             if(btnElement) btnElement.classList.add('active');
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
         }
 
         function selectLevel(lvl) {
@@ -611,7 +606,7 @@
             document.querySelectorAll('.lvl-btn').forEach((btn, i) => {
                 btn.classList.toggle('active', i + 1 === lvl);
             });
-            document.getElementById('quizLvlTag').innerText = `Сэдэв: ${lvl === 3 ? '12-р анги & ЭЕШ' : lvl + '10-р анги'}`;
+            document.getElementById('quizLvlTag').innerText = `Сэдэв: ${lvl === 3 ? '12-р анги & ЭЕШ' : (lvl === 2 ? '11-р анги' : '10-р анги')}`;
             generateQuestion();
         }
 
@@ -622,7 +617,7 @@
             const pool = questionsDB[currentLevel];
             currentQuestion = pool[Math.floor(Math.random() * pool.length)];
 
-            document.getElementById('problemText').innerText = currentQuestion.q;
+            document.getElementById('problemText').innerHTML = currentQuestion.q;
 
             const grid = document.getElementById('optionsGrid');
             grid.innerHTML = '';
@@ -630,10 +625,14 @@
             currentQuestion.opts.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+                btn.innerHTML = `<strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}`;
                 btn.onclick = () => checkAnswer(idx, btn);
                 grid.appendChild(btn);
             });
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
         }
 
         function checkAnswer(selectedIdx, btnElement) {
@@ -655,7 +654,6 @@
                 allBtns[currentQuestion.a].style.background = 'var(--accent-green)';
             }
 
-            // Render Step-by-Step Explanation
             const expContent = document.getElementById('explanationContent');
             expContent.innerHTML = '';
             
@@ -668,6 +666,10 @@
 
             document.getElementById('explanationBox').style.display = 'block';
             document.getElementById('nextBtn').style.display = 'inline-block';
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
         }
     </script>
 </body>
