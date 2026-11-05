@@ -3,852 +3,509 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Математикийн Мастер - Ахлах Анги (10, 11, 12)</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Canvas Confetti Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- MathJax for rendering math formulas beautifully -->
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        dark: {
-                            bg: '#0F172A',
-                            card: '#1E293B',
-                            border: '#334155'
-                        },
-                        brand: {
-                            cyan: '#06B6D4',
-                            purple: '#8B5CF6',
-                            pink: '#EC4899',
-                            emerald: '#10B981',
-                            amber: '#F59E0B'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Математикийн Мастер - Ахлах Анги & Онооны Систем</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #06b6d4;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --gold: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0F172A;
-            color: #F8FAFC;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        /* Login Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
-        .glow-cyan {
-            box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.3);
+
+        .login-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .glow-purple {
-            box-shadow: 0 0 25px -5px rgba(139, 92, 246, 0.3);
+
+        .login-card h2 {
+            margin-bottom: 1rem;
+            color: #fff;
         }
-        .pop-in {
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+        .login-input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 2px solid #334155;
+            background: #0f172a;
+            color: #fff;
+            font-size: 1rem;
+            margin: 1.5rem 0;
+            outline: none;
         }
-        @keyframes popIn {
-            0% { transform: scale(0.92); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+
+        .login-input:focus {
+            border-color: var(--primary);
         }
-        .shake {
-            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+
+        /* Navbar & Stats */
+        header {
+            background: var(--card-bg);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-2px, 0, 0); }
-            20%, 80% { transform: translate3d(4px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
-            40%, 60% { transform: translate3d(6px, 0, 0); }
+
+        .logo-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #0f172a;
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid #334155;
+        }
+
+        .stat-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: bold;
+        }
+
+        .stat-score { color: var(--gold); }
+        .stat-level { color: var(--secondary); }
+
+        .btn-small {
+            background: #334155;
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-small:hover { background: #475569; }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* Level Selector Cards */
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .level-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 2px solid #334155;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card:hover:not(.locked) {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .level-card.active {
+            border-color: var(--secondary);
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .level-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #111827;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: #334155;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        /* Quiz Box */
+        .quiz-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+            text-align: center;
+        }
+
+        .problem-text {
+            font-size: 2rem;
+            margin: 1.5rem 0;
+            font-weight: bold;
+            color: #fff;
+            min-height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .option-btn {
+            background: #0f172a;
+            border: 2px solid #334155;
+            color: #fff;
+            padding: 1rem;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: #1e1b4b;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background: var(--primary-dark); }
+
+        .explanation-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #0f172a;
+            border-radius: 10px;
+            border-left: 4px solid var(--secondary);
+            text-align: left;
+            display: none;
+        }
+
+        /* Progress Bar */
+        .progress-bar-bg {
+            background: #0f172a;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s;
+        }
+
+        @media(max-width: 600px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .problem-text { font-size: 1.5rem; }
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen antialiased selection:bg-brand-purple selection:text-white">
+<body>
 
-    <!-- Top Navigation Bar -->
-    <header class="border-b border-dark-border glass-panel sticky top-0 z-40 px-4 py-3">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="showScreen('selection')">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-xl text-white shadow-lg">
-                    ∑
-                </div>
-                <div>
-                    <h1 class="font-extrabold text-lg md:text-xl tracking-tight bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                        MATH MASTER <span class="text-xs px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-normal">Ахлах анги</span>
-                    </h1>
-                    <p class="text-xs text-slate-400 hidden sm:block">10-12-р анги & ЭЕШ-ийн Математикийн Дасгал</p>
-                </div>
-            </div>
-
-            <div class="flex items-center space-x-3">
-                <!-- Formula Reference Modal Trigger -->
-                <button onclick="toggleFormulaModal(true)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs md:text-sm font-semibold flex items-center space-x-2 text-cyan-400 transition">
-                    <i class="fa-solid fa-book-bookmark"></i>
-                    <span>Томьёоны лавлах</span>
-                </button>
-
-                <!-- Live Quiz Stats -->
-                <div id="topStats" class="hidden flex items-center space-x-3 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 text-xs md:text-sm">
-                    <span class="text-amber-400 font-bold"><i class="fa-solid fa-star mr-1"></i><span id="headerScore">0</span></span>
-                    <span class="text-slate-600">|</span>
-                    <span class="text-orange-400 font-bold"><i class="fa-solid fa-fire mr-1"></i><span id="headerStreak">0</span></span>
-                    <span class="text-slate-600">|</span>
-                    <span class="text-cyan-400 font-mono"><i class="fa-regular fa-clock mr-1"></i><span id="headerTimer">00:00</span></span>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Container -->
-    <main class="flex-grow max-w-5xl w-full mx-auto p-4 md:p-6 flex flex-col justify-center">
-
-        <!-- 1. DASHBOARD / SELECTION SCREEN -->
-        <section id="selectionScreen" class="space-y-6 pop-in">
-            <div class="text-center max-w-2xl mx-auto space-y-2">
-                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Өөрийн түвшин ба сэдвээ сонгоно уу</h2>
-                <p class="text-slate-400 text-sm md:text-base">ЭЕШ болон Ангийн хичээлийн ахисан түвшний интерактив дасгалууд</p>
-            </div>
-
-            <!-- Grade Selection Tabs -->
-            <div class="grid grid-cols-3 gap-3 max-w-xl mx-auto bg-slate-800/60 p-1.5 rounded-2xl border border-slate-700">
-                <button onclick="selectGrade(10)" id="grade-btn-10" class="grade-tab-btn py-2.5 rounded-xl font-bold text-sm transition">
-                    10-р анги
-                </button>
-                <button onclick="selectGrade(11)" id="grade-btn-11" class="grade-tab-btn py-2.5 rounded-xl font-bold text-sm transition">
-                    11-р анги
-                </button>
-                <button onclick="selectGrade(12)" id="grade-btn-12" class="grade-tab-btn py-2.5 rounded-xl font-bold text-sm transition">
-                    12-р анги
-                </button>
-            </div>
-
-            <!-- Topic Selector List -->
-            <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">1. Сэдэв сонгох:</label>
-                <div id="topicsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <!-- Dynamic topic cards rendered here -->
-                </div>
-            </div>
-
-            <!-- Difficulty Level -->
-            <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">2. Хүндрэлийн түвшин:</label>
-                <div class="grid grid-cols-3 gap-3">
-                    <button onclick="selectDifficulty('basic')" id="diff-basic" class="diff-btn p-4 rounded-xl font-bold text-sm border transition text-center">
-                        <div class="text-emerald-400 font-extrabold mb-1">🌱 Анхан</div>
-                        <div class="text-xs text-slate-400 font-normal">Үндсэн ойлголт</div>
-                    </button>
-                    <button onclick="selectDifficulty('standard')" id="diff-standard" class="diff-btn p-4 rounded-xl font-bold text-sm border transition text-center">
-                        <div class="text-cyan-400 font-extrabold mb-1">⚡ Дунд</div>
-                        <div class="text-xs text-slate-400 font-normal">Стандарт дасгал</div>
-                    </button>
-                    <button onclick="selectDifficulty('advanced')" id="diff-advanced" class="diff-btn p-4 rounded-xl font-bold text-sm border transition text-center">
-                        <div class="text-purple-400 font-extrabold mb-1">🔥 Ахисан (ЭЕШ)</div>
-                        <div class="text-xs text-slate-400 font-normal">ЭЕШ-ийн сорил даалгавар</div>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Start Button -->
-            <div class="pt-2 text-center">
-                <button onclick="startQuiz()" class="w-full sm:w-auto px-12 py-4 bg-gradient-to-r from-brand-cyan via-brand-purple to-brand-pink font-extrabold text-lg rounded-2xl shadow-xl hover:opacity-90 hover:scale-[1.02] active:scale-95 transition">
-                    Дасгал ажлыг эхлүүлэх <i class="fa-solid fa-arrow-right ml-2"></i>
-                </button>
-            </div>
-        </section>
-
-        <!-- 2. INTERACTIVE QUIZ INTERFACE -->
-        <section id="quizScreen" class="hidden space-y-6">
-            <!-- Progress & Badge Bar -->
-            <div class="flex justify-between items-center text-xs md:text-sm text-slate-400 font-semibold">
-                <span id="questionCounter">Бодлого 1/10</span>
-                <div class="flex items-center space-x-2">
-                    <span id="topicBadge" class="bg-slate-800 text-cyan-400 border border-cyan-500/30 px-3 py-1 rounded-full text-xs">Тригонометр</span>
-                    <span id="difficultyBadge" class="bg-purple-950/60 text-purple-300 border border-purple-500/30 px-3 py-1 rounded-full text-xs">Дунд</span>
-                </div>
-            </div>
-
-            <!-- Progress Bar -->
-            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700">
-                <div id="progressBar" class="bg-gradient-to-r from-brand-cyan to-brand-purple h-full w-0 transition-all duration-300"></div>
-            </div>
-
-            <!-- Problem Card -->
-            <div class="glass-panel rounded-3xl p-6 md:p-10 border border-slate-700 text-center relative shadow-2xl space-y-4 min-h-[180px] flex flex-col justify-center items-center">
-                <div class="text-xs uppercase font-bold text-slate-400 tracking-wider">Бодлогын нөхцөл:</div>
-                <div id="questionText" class="font-mono text-2xl md:text-4xl font-extrabold text-slate-100 tracking-wide leading-relaxed">
-                    <!-- Math rendering area -->
-                </div>
-            </div>
-
-            <!-- Input Controls -->
-            <div class="max-w-md mx-auto space-y-4">
-                <div class="flex space-x-2">
-                    <input type="text" id="answerInput" readonly placeholder="Хариу оруулах..." 
-                        class="w-full text-center font-mono text-2xl font-bold py-3.5 px-4 bg-slate-900 border-2 border-brand-purple rounded-2xl shadow-inner focus:outline-none focus:border-brand-cyan text-white tracking-widest">
-                    <button onclick="clearInput()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-5 rounded-2xl font-bold transition">
-                        <i class="fa-solid fa-delete-left text-xl"></i>
-                    </button>
-                </div>
-
-                <!-- Specialized High-School Numpad -->
-                <div class="grid grid-cols-4 gap-2">
-                    <button onclick="appendNum('7')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-xl font-bold rounded-xl border border-slate-700 active:scale-95 transition">7</button>
-                    <button onclick="appendNum('8')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-xl font-bold rounded-xl border border-slate-700 active:scale-95 transition">8</button>
-                    <button onclick="appendNum('9')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-xl font-bold rounded-xl border border-slate-700 active:scale-95 transition">9</button>
-                    <button onclick="appendNum('/')" class="py-3 bg-purple-950/40 hover:bg-purple-900/40 text-purple-300 font-mono text-lg font-bold rounded-xl border border-purple-800/50 active:scale-95 transition">/</button>
-
-                    <button onclick="appendNum('4')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-xl font-bold rounded-xl border border-slate-700 active:scale-95 transition">4</button>
-                    <button onclick="appendNum('5')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-xl font-bold rounded-xl border border-slate-700 active:scale-95 transition">5</button>
-                    <button onclick="appendNum('6')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-xl font-bold rounded-xl border border-slate-700 active:scale-95 transition">6</button>
-                    <button onclick="appendNum('*')" class="py-3 bg-purple-950/40 hover:bg-purple-900/40 text-purple-300 font-mono text-lg font-bold rounded-xl border border-purple-800/50 active:scale-95 transition">×</button>
-
-                    <button onclick="appendNum('1')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-xl font-bold rounded-xl border border-slate-700 active:scale-95 transition">1</button>
-                    <button onclick="appendNum('2')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-xl font-bold rounded-xl border border-slate-700 active:scale-95 transition">2</button>
-                    <button onclick="appendNum('3')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-xl font-bold rounded-xl border border-slate-700 active:scale-95 transition">3</button>
-                    <button onclick="appendNum('-')" class="py-3 bg-purple-950/40 hover:bg-purple-900/40 text-purple-300 font-mono text-lg font-bold rounded-xl border border-purple-800/50 active:scale-95 transition">-</button>
-
-                    <button onclick="appendNum('0')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-xl font-bold rounded-xl border border-slate-700 active:scale-95 transition">0</button>
-                    <button onclick="appendNum('.')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-xl font-bold rounded-xl border border-slate-700 active:scale-95 transition">.</button>
-                    <button onclick="appendNum('π')" class="py-3 bg-slate-800/80 hover:bg-slate-700 font-mono text-lg font-bold text-cyan-400 rounded-xl border border-slate-700 active:scale-95 transition">π</button>
-                    <button onclick="appendNum('+')" class="py-3 bg-purple-950/40 hover:bg-purple-900/40 text-purple-300 font-mono text-lg font-bold rounded-xl border border-purple-800/50 active:scale-95 transition">+</button>
-                </div>
-
-                <!-- Submit Button -->
-                <button onclick="checkAnswer()" class="w-full py-4 bg-gradient-to-r from-brand-emerald to-teal-500 hover:opacity-90 font-bold text-lg rounded-2xl shadow-lg active:scale-95 transition">
-                    Хариуг шалгах <i class="fa-solid fa-circle-check ml-1"></i>
-                </button>
-            </div>
-        </section>
-
-        <!-- 3. DETAILED SOLUTION / FEEDBACK MODAL -->
-        <div id="feedbackModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
-            <div id="modalCard" class="glass-panel rounded-3xl p-6 md:p-8 max-w-lg w-full border border-slate-700 shadow-2xl space-y-5">
-                <div class="flex items-center space-x-3">
-                    <div id="feedbackIcon" class="text-4xl">🎉</div>
-                    <div>
-                        <h3 id="feedbackTitle" class="text-2xl font-bold">Зөв бодлоо!</h3>
-                        <p id="feedbackSubtitle" class="text-xs text-slate-400">Амжилттай оноо цуглуулав</p>
-                    </div>
-                </div>
-
-                <!-- Step-by-Step Explanation Box -->
-                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl space-y-2 text-sm">
-                    <div class="text-xs font-bold uppercase text-brand-cyan tracking-wider flex items-center">
-                        <i class="fa-solid fa-lightbulb mr-1.5"></i> Бодолтын дараалал ба тайлбар:
-                    </div>
-                    <div id="solutionSteps" class="font-mono text-slate-300 leading-relaxed overflow-x-auto p-1">
-                        <!-- LaTeX or step solution -->
-                    </div>
-                </div>
-
-                <button onclick="nextQuestion()" class="w-full py-3.5 bg-gradient-to-r from-brand-purple to-brand-cyan hover:opacity-90 font-bold rounded-xl transition">
-                    Үргэлжлүүлэх <i class="fa-solid fa-chevron-right ml-1"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- 4. ANALYTICS & SUMMARY SCREEN -->
-        <section id="summaryScreen" class="hidden space-y-6 text-center pop-in">
-            <div class="space-y-2">
-                <div id="summaryBadge" class="text-7xl mb-2">🏆</div>
-                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Дасгал ажил дууслаа!</h2>
-                <p class="text-slate-400 text-sm">Таны суралцах явцын дүн шинжилгээ ба амжилт</p>
-            </div>
-
-            <!-- Dashboard Stats Cards -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-                <div class="glass-panel p-4 rounded-2xl border border-purple-500/20">
-                    <p class="text-xs text-purple-400 font-bold uppercase">Нийт Оноо</p>
-                    <p id="finalScore" class="font-mono text-3xl font-extrabold text-purple-300 mt-1">0</p>
-                </div>
-                <div class="glass-panel p-4 rounded-2xl border border-emerald-500/20">
-                    <p class="text-xs text-emerald-400 font-bold uppercase">Гүйцэтгэл</p>
-                    <p id="finalAccuracy" class="font-mono text-3xl font-extrabold text-emerald-300 mt-1">0%</p>
-                </div>
-                <div class="glass-panel p-4 rounded-2xl border border-amber-500/20">
-                    <p class="text-xs text-amber-400 font-bold uppercase">Макс Streak</p>
-                    <p id="finalStreak" class="font-mono text-3xl font-extrabold text-amber-300 mt-1">0 🔥</p>
-                </div>
-                <div class="glass-panel p-4 rounded-2xl border border-cyan-500/20">
-                    <p class="text-xs text-cyan-400 font-bold uppercase">Нийт Хугацаа</p>
-                    <p id="finalTime" class="font-mono text-3xl font-extrabold text-cyan-300 mt-1">00:00</p>
-                </div>
-            </div>
-
-            <!-- Rank/Title Box -->
-            <div class="glass-panel p-5 rounded-2xl border border-slate-700 max-w-md mx-auto">
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Таны оногдсон цол:</p>
-                <p id="rewardTitle" class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
-                    🌟 ЭЕШ-ийн Мастер
-                </p>
-            </div>
-
-            <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
-                <button onclick="restartQuiz()" class="px-8 py-3.5 bg-brand-purple hover:bg-purple-600 font-bold rounded-xl transition">
-                    Дахин бодох 🔄
-                </button>
-                <button onclick="showScreen('selection')" class="px-8 py-3.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 font-bold rounded-xl transition">
-                    Сэдэв солих ⚙️
-                </button>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FORMULA CHEAT-SHEET MODAL -->
-    <div id="formulaModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="glass-panel rounded-3xl p-6 max-w-2xl w-full max-h-[85vh] overflow-y-auto border border-slate-700 space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-700 pb-3">
-                <h3 class="text-xl font-extrabold text-cyan-400 flex items-center">
-                    <i class="fa-solid fa-book-bookmark mr-2"></i> Ахлах Анги Математик Томьёоны Лавлах
-                </h3>
-                <button onclick="toggleFormulaModal(false)" class="text-slate-400 hover:text-white font-bold text-xl px-2">✕</button>
-            </div>
-
-            <div class="space-y-4 text-sm">
-                <!-- Trig -->
-                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
-                    <h4 class="font-bold text-purple-400 mb-2">1. Тригонометрийн Адилтгалууд</h4>
-                    <p class="font-mono text-xs text-slate-300">
-                        • \(\sin^2(x) + \cos^2(x) = 1\)<br>
-                        • \(\tan(x) = \frac{\sin(x)}{\cos(x)}\)<br>
-                        • \(\sin(2x) = 2\sin(x)\cos(x)\)<br>
-                        • \(\cos(2x) = \cos^2(x) - \sin^2(x)\)
-                    </p>
-                </div>
-
-                <!-- Log & Exp -->
-                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
-                    <h4 class="font-bold text-cyan-400 mb-2">2. Логарифм ба Илтгэгч Чанарууд</h4>
-                    <p class="font-mono text-xs text-slate-300">
-                        • \(\log_a(xy) = \log_a(x) + \log_a(y)\)<br>
-                        • \(\log_a(\frac{x}{y}) = \log_a(x) - \log_a(y)\)<br>
-                        • \(\log_a(x^k) = k \cdot \log_a(x)\)<br>
-                        • \(\log_a(b) = \frac{\ln(b)}{\ln(a)}\)
-                    </p>
-                </div>
-
-                <!-- Derivatives & Integrals -->
-                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
-                    <h4 class="font-bold text-emerald-400 mb-2">3. Уламжлал ба Интеграл</h4>
-                    <p class="font-mono text-xs text-slate-300">
-                        • \((x^n)' = n \cdot x^{n-1}\)  |  \(\int x^n dx = \frac{x^{n+1}}{n+1} + C\)<br>
-                        • \((\sin x)' = \cos x\)  |  \(\int \cos x dx = \sin x + C\)<br>
-                        • \((\cos x)' = -\sin x\)  |  \(\int \sin x dx = -\cos x + C\)<br>
-                        • \((e^x)' = e^x\)  |  \(\int e^x dx = e^x + C\)
-                    </p>
-                </div>
-            </div>
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="login-card">
+            <i class="fa-solid fa-graduation-cap" style="font-size: 3rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+            <h2>Математикийн Мастер</h2>
+            <p style="color: var(--text-muted);">Сурагчийн нэр эсвэл ID-аа оруулж хичээлээ эхлүүлнэ үү.</p>
+            <input type="text" id="usernameInput" class="login-input" placeholder="Жишээ: Анар-Эрдэнэ (10a)" maxlength="20">
+            <button class="btn-primary" style="width: 100%;" onclick="login()">Эхлэх / Нэвтрэх</button>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo-title">
+            <i class="fa-solid fa-calculator"></i> MathMaster MN
+        </div>
+        <div class="user-profile">
+            <div class="stat-badge stat-level">
+                <i class="fa-solid fa-award"></i> <span id="userLevel">Level 1</span>
+            </div>
+            <div class="stat-badge stat-score">
+                <i class="fa-solid fa-star"></i> <span id="userScore">0</span> оноо
+            </div>
+            <div class="stat-badge" style="color: #fff;">
+                <i class="fa-solid fa-user"></i> <span id="displayName">...</span>
+            </div>
+            <button class="btn-small" onclick="logout()">Солих</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Level Unlocking Progress -->
+        <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-muted);">
+                <span>Дараагийн шат хүртэлх ахиц:</span>
+                <span id="progressText">0 / 150 оноо</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+        </div>
+
+        <!-- Level Cards -->
+        <div class="level-grid">
+            <div class="level-card active" id="lvlCard1" onclick="selectLevel(1)">
+                <h3>Level 1: 10-р Анги</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">Тригонометр, Илтгэгч функц, Тэгшитгэл</p>
+            </div>
+            <div class="level-card locked" id="lvlCard2" onclick="selectLevel(2)">
+                <div class="lock-overlay" id="lock2"><i class="fa-solid fa-lock"></i> 150 оноо хэрэгтэй</div>
+                <h3>Level 2: 11-р Анги</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">Логарифм, Уламжлал, Матриц</p>
+            </div>
+            <div class="level-card locked" id="lvlCard3" onclick="selectLevel(3)">
+                <div class="lock-overlay" id="lock3"><i class="fa-solid fa-lock"></i> 400 оноо хэрэгтэй</div>
+                <h3>Level 3: ЭЕШ Мастер</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">Интеграл, Магадлал, Комплекс тоо</p>
+            </div>
+        </div>
+
+        <!-- Quiz Container -->
+        <div class="quiz-card">
+            <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem;">
+                <span id="topicTag">Сэдэв: Бааз</span>
+                <span id="difficultyTag">Түвшин: Анхан</span>
+            </div>
+
+            <div class="problem-text" id="problemText">Бодлого ачаалж байна...</div>
+
+            <div class="options-grid" id="optionsGrid">
+                <!-- Options populated dynamically -->
+            </div>
+
+            <div class="explanation-box" id="explanationBox">
+                <strong>💡 Бодолтын тайлбар:</strong>
+                <p id="explanationText" style="margin-top: 5px; color: #cbd5e1;"></p>
+            </div>
+
+            <button class="btn-primary" id="nextBtn" style="margin-top: 1.5rem; display: none;" onclick="generateQuestion()">Дараагийн бодлого ➔</button>
+        </div>
+    </div>
+
     <script>
-        // Data Structure for Topics
-        const GRADE_TOPICS = {
-            10: [
-                { id: 'g10_trig', title: 'Тригонометр харьцаа', desc: 'Синус, Косинус, Тангенс өнцгүүд' },
-                { id: 'g10_quad', title: 'Тэгшитгэл ба Тэнцэтгэл биш', desc: 'Квадрат тэгшитгэл, Виетийн теорем' },
-                { id: 'g10_exp', title: 'Илтгэгч Функц ба Чанар', desc: 'Зэрэгт ба илтгэгч тэгшитгэл' },
-                { id: 'g10_coord', title: 'Координатын Геометр', desc: 'Зай, шулууны тэгшитгэл, хавтгай' }
+        // Database of Questions
+        const questionsDB = {
+            1: [ // Grade 10
+                { q: "\\sin(30^\\circ) - \\cos(60^\\circ) = ?", opts: ["0", "1", "1/2", "-1"], a: 0, exp: "sin(30°) = 1/2 болон cos(60°) = 1/2 учир 1/2 - 1/2 = 0 болно." },
+                { q: "2^x = 32 бол x-ийн утгыг ол.", opts: ["4", "5", "6", "3"], a: 1, exp: "32 нь 2-ын 5 зэрэгт учир 2^x = 2^5 => x = 5." },
+                { q: "x^2 - 9 = 0 тэгшитгэлийн шийдийг ол.", opts: ["x = 3", "x = -3", "x = ±3", "x = 9"], a: 2, exp: "x^2 = 9 тул x = ±√9 = ±3." }
             ],
-            11: [
-                { id: 'g11_log', title: 'Логарифм', desc: 'Логарифм тэгшитгэл ба чанарууд' },
-                { id: 'g11_deriv', title: 'Уламжлал ба Хязгаар', desc: 'Функцийн уламжлал авагдах чанар' },
-                { id: 'g11_trigeq', title: 'Тригонометр Тэгшитгэл', desc: 'Хялбар ба нийлмэл триг тэгшитгэл' },
-                { id: 'g11_matrix', title: 'Матриц ба Вектор', desc: 'Векторын скаляр үржвэр, матрицын тодорхойлогч' }
+            2: [ // Grade 11
+                { q: "\\log_2(16) = ?", opts: ["2", "4", "8", "16"], a: 1, exp: "2^4 = 16 учир log_2(16) = 4 байна." },
+                { q: "f(x) = 3x^2 + 5x функцийн уламжлалыг ол.", opts: ["6x + 5", "3x + 5", "6x^2", "5x"], a: 0, exp: "(x^n)' = n*x^(n-1) томьёогоор (3x^2)' = 6x, (5x)' = 5 тул 6x + 5 болно." },
+                { q: "\\sin^2(x) + \\cos^2(x) = ?", opts: ["0", "1", "2", "\\tan(x)"], a: 1, exp: "Тригонометрийн үндсэн адилтгалаар sin²(x) + cos²(x) = 1 байдаг." }
             ],
-            12: [
-                { id: 'g12_integ', title: 'Интеграл (Ньютон-Лейбниц)', desc: 'Тодорхой ба тодорхойгүй интеграл' },
-                { id: 'g12_prob', title: 'Магадлал ба Комбинаторик', desc: 'Сэлгэмэл, Гүйлгэмэл, Хэсэглэл (P, A, C)' },
-                { id: 'g12_complex', title: 'Комплекс Тоо', desc: 'А алгебр хэлбэр, модули ба аргумент' },
-                { id: 'g12_prog', title: 'Арифметик/Геометр Прогресс', desc: 'Дараалал, n-р гишүүн ба нийлбэр' }
+            3: [ // Grade 12 / EESH
+                { q: "\\int 2x dx = ?", opts: ["x^2 + C", "2x^2 + C", "x + C", "2 + C"], a: 0, exp: "Эх функц олохдоо зэрэг дээр 1-ийг нэмж зэрэгт хуваана: 2*(x^2)/2 = x^2 + C." },
+                { q: "4 элементээс 2-ыг сонгох хослолын тоо C(4,2) = ?", opts: ["6", "12", "8", "4"], a: 0, exp: "C(4,2) = 4! / (2! * 2!) = (4*3)/2 = 6." },
+                { q: "i^2 -ийн утга юу вэ? (i нь комплекс нэгж)", opts: ["1", "-1", "0", "i"], a: 1, exp: "Комплекс тооны тодорхойлолтоор i = √(-1) учир i^2 = -1 байна." }
             ]
         };
 
-        // Application State
-        let currentGrade = 10;
-        let selectedTopicId = 'g10_trig';
-        let selectedDifficulty = 'standard';
-        
-        let currentQuestionIndex = 0;
-        let totalQuestions = 10;
-        let score = 0;
-        let streak = 0;
-        let maxStreak = 0;
-        let correctCount = 0;
+        let currentUser = null;
+        let currentLevel = 1;
         let currentQuestion = null;
-        let timerInterval = null;
-        let secondsElapsed = 0;
 
-        // Web Audio Synthesizer for Audio Feedback
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playSound(type) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            if (type === 'correct') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08); // E5
-                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.16); // G5
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.35);
-            } else if (type === 'wrong') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(220, audioCtx.currentTime); 
-                osc.frequency.setValueAtTime(160, audioCtx.currentTime + 0.12);
-                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.3);
-            }
-        }
-
-        // Selection Handlers
-        function selectGrade(grade) {
-            currentGrade = grade;
-            [10, 11, 12].forEach(g => {
-                const btn = document.getElementById(`grade-btn-${g}`);
-                if (g === grade) {
-                    btn.className = "grade-tab-btn py-2.5 rounded-xl font-bold text-sm bg-brand-purple text-white shadow-lg transition";
-                } else {
-                    btn.className = "grade-tab-btn py-2.5 rounded-xl font-bold text-sm text-slate-400 hover:text-white transition";
-                }
-            });
-
-            // Render topics
-            const container = document.getElementById('topicsContainer');
-            container.innerHTML = '';
-            const topics = GRADE_TOPICS[grade];
-            selectedTopicId = topics[0].id; // default select first
-
-            topics.forEach((t, idx) => {
-                const isSelected = idx === 0;
-                const card = document.createElement('div');
-                card.id = `topic-card-${t.id}`;
-                card.onclick = () => selectTopic(t.id);
-                card.className = `p-4 rounded-xl border cursor-pointer transition flex items-start space-x-3 ${
-                    isSelected ? 'bg-purple-950/40 border-purple-500/80 ring-2 ring-purple-500/30' : 'bg-slate-800/40 border-slate-700/60 hover:bg-slate-800'
-                }`;
-                card.innerHTML = `
-                    <div class="text-xl text-brand-cyan"><i class="fa-solid fa-square-root-variable"></i></div>
-                    <div>
-                        <h4 class="font-bold text-sm text-slate-100">${t.title}</h4>
-                        <p class="text-xs text-slate-400">${t.desc}</p>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function selectTopic(topicId) {
-            selectedTopicId = topicId;
-            GRADE_TOPICS[currentGrade].forEach(t => {
-                const card = document.getElementById(`topic-card-${t.id}`);
-                if (card) {
-                    if (t.id === topicId) {
-                        card.className = 'p-4 rounded-xl border cursor-pointer transition flex items-start space-x-3 bg-purple-950/40 border-purple-500/80 ring-2 ring-purple-500/30';
-                    } else {
-                        card.className = 'p-4 rounded-xl border cursor-pointer transition flex items-start space-x-3 bg-slate-800/40 border-slate-700/60 hover:bg-slate-800';
-                    }
-                }
-            });
-        }
-
-        function selectDifficulty(diff) {
-            selectedDifficulty = diff;
-            const btnMap = {
-                basic: { id: 'diff-basic', active: 'bg-emerald-950/50 border-emerald-500 ring-2 ring-emerald-500/20' },
-                standard: { id: 'diff-standard', active: 'bg-cyan-950/50 border-cyan-500 ring-2 ring-cyan-500/20' },
-                advanced: { id: 'diff-advanced', active: 'bg-purple-950/50 border-purple-500 ring-2 ring-purple-500/20' }
-            };
-
-            Object.keys(btnMap).forEach(key => {
-                const btn = document.getElementById(btnMap[key].id);
-                if (key === diff) {
-                    btn.className = `diff-btn p-4 rounded-xl font-bold text-sm border transition text-center ${btnMap[key].active}`;
-                } else {
-                    btn.className = 'diff-btn p-4 rounded-xl font-bold text-sm border border-slate-700 bg-slate-800/40 text-slate-400 hover:bg-slate-800 transition text-center';
-                }
-            });
-        }
-
-        function toggleFormulaModal(show) {
-            document.getElementById('formulaModal').classList.toggle('hidden', !show);
-        }
-
-        // Screen Navigation
-        function showScreen(screenId) {
-            document.getElementById('selectionScreen').classList.add('hidden');
-            document.getElementById('quizScreen').classList.add('hidden');
-            document.getElementById('summaryScreen').classList.add('hidden');
-            document.getElementById('topStats').classList.add('hidden');
-
-            if (screenId === 'selection') {
-                document.getElementById('selectionScreen').classList.remove('hidden');
-                clearInterval(timerInterval);
-            } else if (screenId === 'quiz') {
-                document.getElementById('quizScreen').classList.remove('hidden');
-                document.getElementById('topStats').classList.remove('hidden');
-            } else if (screenId === 'summary') {
-                document.getElementById('summaryScreen').classList.remove('hidden');
-                clearInterval(timerInterval);
-            }
-        }
-
-        // Onscreen & Keyboard Inputs
-        function appendNum(val) {
-            const input = document.getElementById('answerInput');
-            if (input.value.length < 12) {
-                input.value += val;
-            }
-        }
-
-        function clearInput() {
-            document.getElementById('answerInput').value = '';
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (document.getElementById('quizScreen').classList.contains('hidden')) return;
-            if (e.key >= '0' && e.key <= '9') appendNum(e.key);
-            else if (e.key === '.') appendNum('.');
-            else if (e.key === '-') appendNum('-');
-            else if (e.key === '/') appendNum('/');
-            else if (e.key === '*') appendNum('*');
-            else if (e.key === '+') appendNum('+');
-            else if (e.key === 'Backspace') clearInput();
-            else if (e.key === 'Enter') checkAnswer();
-        });
-
-        // Dynamic Problem Generation Engine for High School Math
-        function generateProblem() {
-            const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-            let qText = '', ans = 0, steps = '';
-
-            switch(selectedTopicId) {
-                // GRADE 10 TOPICS
-                case 'g10_trig': {
-                    const angles = [0, 30, 45, 60, 90, 180];
-                    const angle = angles[rand(1, 4)];
-                    const funcs = ['sin', 'cos', 'tan'];
-                    const func = funcs[rand(0, 2)];
-
-                    if (func === 'sin') {
-                        qText = `\\(\\sin(${angle}^\\circ) = ?\\)`;
-                        if (angle === 30) { ans = "1/2"; steps = "\\(\\sin(30^\\circ) = 1/2 = 0.5\\)"; }
-                        else if (angle === 90) { ans = "1"; steps = "\\(\\sin(90^\\circ) = 1\\)"; }
-                        else if (angle === 180) { ans = "0"; steps = "\\(\\sin(180^\\circ) = 0\\)"; }
-                        else { ans = "0.5"; steps = "\\(\\sin(30^\\circ) = 0.5\\)"; }
-                    } else if (func === 'cos') {
-                        qText = `\\(\\cos(${angle}^\\circ) = ?\\)`;
-                        if (angle === 60) { ans = "1/2"; steps = "\\(\\cos(60^\\circ) = 1/2 = 0.5\\)"; }
-                        else if (angle === 0) { ans = "1"; steps = "\\(\\cos(0^\\circ) = 1\\)"; }
-                        else { ans = "0.5"; steps = "\\(\\cos(60^\\circ) = 0.5\\)"; }
-                    } else {
-                        qText = `\\(\\tan(45^\\circ) = ?\\)`;
-                        ans = "1";
-                        steps = "\\(\\tan(45^\\circ) = \\frac{\\sin 45^\\circ}{\\cos 45^\\circ} = 1\\)";
-                    }
-                    break;
-                }
-                case 'g10_quad': {
-                    // Quadratic x^2 - (a+b)x + ab = 0
-                    const a = rand(1, 5);
-                    const b = rand(6, 10);
-                    const sum = a + b;
-                    const prod = a * b;
-                    qText = `\\(x^2 - ${sum}x + ${prod} = 0\\) тэгшитгэлийн том шишийг ол.`;
-                    ans = String(b);
-                    steps = `Виетийн теоремоор: \\(x_1 + x_2 = ${sum}\\) ба \\(x_1 \\cdot x_2 = ${prod}\\). Шишүүд: \\(x_1=${a}, x_2=${b}\\). Буюу том шиш нь ${b}.`;
-                    break;
-                }
-                case 'g10_exp': {
-                    const base = rand(2, 4);
-                    const exp = rand(2, 4);
-                    const val = Math.pow(base, exp);
-                    qText = `\\(${base}^x = ${val}\\) бол \\(x = ?\\)`;
-                    ans = String(exp);
-                    steps = `\\(${base}^x = ${base}^${exp} \\implies x = ${exp}\\)`;
-                    break;
-                }
-                case 'g10_coord': {
-                    const x1 = rand(1, 4), y1 = rand(1, 4);
-                    const dx = 3, dy = 4;
-                    const x2 = x1 + dx, y2 = y1 + dy;
-                    qText = `\\(A(${x1}, ${y1})\\) ба \\(B(${x2}, ${y2})\\) цэгүүдийн хоорондох зайг ол.`;
-                    ans = "5";
-                    steps = `Зайн томьёо: \\(d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2} = \\sqrt{3^2 + 4^2} = \\sqrt{25} = 5\\)`;
-                    break;
-                }
-
-                // GRADE 11 TOPICS
-                case 'g11_log': {
-                    const base = rand(2, 5);
-                    const exp = rand(2, 4);
-                    const val = Math.pow(base, exp);
-                    qText = `\\(\\log_{${base}}(${val}) = ?\\)`;
-                    ans = String(exp);
-                    steps = `\\(\\log_{a}(a^k) = k \\implies \\log_{${base}}(${base}^${exp}) = ${exp}\\)`;
-                    break;
-                }
-                case 'g11_deriv': {
-                    const n = rand(2, 5);
-                    const c = rand(2, 6);
-                    qText = `\\(f(x) = ${c}x^{${n}}\\) функцийн уламжлал \\(f'(x)\\)-ийг ол. \\(x=1\\) үеийн утга?`;
-                    ans = String(c * n);
-                    steps = `\\(f'(x) = ${c} \\cdot ${n}x^{${n-1}} = ${c*n}x^{${n-1}}\\). \\(x=1\\) орлуулбал: \\(f'(1) = ${c*n}\\)`;
-                    break;
-                }
-                case 'g11_trigeq': {
-                    qText = `\\(2\\sin(x) = 1\\) тэгшитгэлийн \\([0, 90^\\circ]\\) засварт орших өнцгийг ол.`;
-                    ans = "30";
-                    steps = `\\(\\sin(x) = 1/2 \\implies x = 30^\\circ\\)`;
-                    break;
-                }
-                case 'g11_matrix': {
-                    const a = rand(1, 5), b = rand(1, 4);
-                    const c = rand(1, 4), d = rand(1, 5);
-                    const det = (a * d) - (b * c);
-                    qText = `\\(A = \\begin{pmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{pmatrix}\\) матрицын тодорхойлогчийг ол.`;
-                    ans = String(det);
-                    steps = `\\(\\det(A) = ad - bc = (${a} \\cdot ${d}) - (${b} \\cdot ${c}) = ${a*d} - ${b*c} = ${det}\\)`;
-                    break;
-                }
-
-                // GRADE 12 TOPICS
-                case 'g12_integ': {
-                    const k = rand(2, 5);
-                    qText = `\\(\\int_{0}^{2} ${k}x \\, dx\\) тодорхой интегралыг бод.`;
-                    ans = String(k * 2);
-                    steps = `\\(\\int ${k}x \\, dx = \\frac{${k}x^2}{2}\\). Ньютон-Лейбниц: \\([\\frac{${k}(2)^2}{2}] - 0 = \\frac{${k} \\cdot 4}{2} = ${k*2}\\)`;
-                    break;
-                }
-                case 'g12_prob': {
-                    // Combinations C(n, 2)
-                    const n = rand(4, 7);
-                    const comb = (n * (n - 1)) / 2;
-                    qText = `\\(C_{${n}}^{2}\\) буюу ${n} элементээс 2-ыг сонгох хэсэглэлийн тоог ол.`;
-                    ans = String(comb);
-                    steps = `\\(C_{n}^{k} = \\frac{n!}{k!(n-k)!} \\implies C_{${n}}^{2} = \\frac{${n} \\times ${n-1}}{2} = ${comb}\\)`;
-                    break;
-                }
-                case 'g12_complex': {
-                    const a = rand(2, 4);
-                    const b = rand(3, 4);
-                    if (a === 3 && b === 4) {
-                        qText = `\\(z = 3 + 4i\\) комплекс тооны модулийг ол (\\(|z| = ?\\)).`;
-                        ans = "5";
-                        steps = `\\(|z| = \\sqrt{a^2 + b^2} = \\sqrt{3^2 + 4^2} = \\sqrt{25} = 5\\)`;
-                    } else {
-                        qText = `\\(z = 6 + 8i\\) комплекс тооны модулийг ол (\\(|z| = ?\\)).`;
-                        ans = "10";
-                        steps = `\\(|z| = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = \\sqrt{100} = 10\\)`;
-                    }
-                    break;
-                }
-                case 'g12_prog': {
-                    const a1 = rand(2, 5);
-                    const d = rand(3, 6);
-                    const n = 5;
-                    const an = a1 + (n - 1) * d;
-                    qText = `Арифметик прогрессийн \\(a_1 = ${a1}, d = ${d}\\) бол \\(a_5 = ?\\)`;
-                    ans = String(an);
-                    steps = `\\(a_n = a_1 + (n-1)d \\implies a_5 = ${a1} + (4 \\times ${d}) = ${a1} + ${4*d} = ${an}\\)`;
-                    break;
-                }
-                default:
-                    qText = `\\(2x + 5 = 15\\) бол \\(x = ?\\)`;
-                    ans = "5";
-                    steps = `\\(2x = 10 \\implies x = 5\\)`;
-            }
-
-            return { text: qText, answer: ans, solution: steps };
-        }
-
-        function startQuiz() {
-            currentQuestionIndex = 0;
-            score = 0;
-            streak = 0;
-            maxStreak = 0;
-            correctCount = 0;
-            secondsElapsed = 0;
-
-            updateStatsHeader();
-            showScreen('quiz');
-            
-            // Start Timer
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                secondsElapsed++;
-                const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
-                const secs = String(secondsElapsed % 60).padStart(2, '0');
-                document.getElementById('headerTimer').innerText = `${mins}:${secs}`;
-            }, 1000);
-
-            loadNextQuestion();
-        }
-
-        function restartQuiz() {
-            startQuiz();
-        }
-
-        function updateStatsHeader() {
-            document.getElementById('headerScore').innerText = score;
-            document.getElementById('headerStreak').innerText = streak;
-        }
-
-        function loadNextQuestion() {
-            if (currentQuestionIndex >= totalQuestions) {
-                finishQuiz();
-                return;
-            }
-
-            currentQuestionIndex++;
-            currentQuestion = generateProblem();
-
-            document.getElementById('questionCounter').innerText = `Бодлого ${currentQuestionIndex}/${totalQuestions}`;
-            document.getElementById('progressBar').style.width = `${(currentQuestionIndex / totalQuestions) * 100}%`;
-            
-            const qEl = document.getElementById('questionText');
-            qEl.innerHTML = currentQuestion.text;
-            document.getElementById('answerInput').value = '';
-
-            const topicObj = GRADE_TOPICS[currentGrade].find(t => t.id === selectedTopicId);
-            document.getElementById('topicBadge').innerText = topicObj ? topicObj.title : 'Математик';
-            
-            const diffLabels = { basic: 'Анхан', standard: 'Дунд', advanced: 'ЭЕШ (Ахисан)' };
-            document.getElementById('difficultyBadge').innerText = diffLabels[selectedDifficulty];
-
-            // Re-render LaTeX with MathJax
-            if (window.MathJax) {
-                MathJax.typesetPromise([qEl]).catch(err => console.log(err));
-            }
-        }
-
-        function checkAnswer() {
-            const inputVal = document.getElementById('answerInput').value.trim();
-            if (!inputVal) return;
-
-            // Normalize strings for comparison (fractions vs decimals)
-            const userStr = inputVal.replace(/\s+/g, '');
-            const targetStr = currentQuestion.answer.replace(/\s+/g, '');
-            
-            let isCorrect = false;
-            if (userStr === targetStr) {
-                isCorrect = true;
+        // Load saved state
+        window.onload = function() {
+            const savedName = localStorage.getItem('math_username');
+            if (savedName) {
+                loadUserData(savedName);
             } else {
-                // Check numerical proximity if float
-                const uNum = parseFloat(userStr);
-                const tNum = parseFloat(targetStr);
-                if (!isNaN(uNum) && !isNaN(tNum) && Math.abs(uNum - tNum) < 0.05) {
-                    isCorrect = true;
-                }
+                document.getElementById('loginModal').style.display = 'flex';
+            }
+        };
+
+        function login() {
+            const nameInput = document.getElementById('usernameInput').value.trim();
+            if (!nameInput) return alert("Нэрээ оруулна уу!");
+            
+            localStorage.setItem('math_username', nameInput);
+            loadUserData(nameInput);
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function logout() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function loadUserData(name) {
+            currentUser = name;
+            document.getElementById('displayName').innerText = name;
+            
+            let score = parseInt(localStorage.getItem(`math_score_${name}`)) || 0;
+            updateUI(score);
+            generateQuestion();
+        }
+
+        function updateUI(score) {
+            document.getElementById('userScore').innerText = score;
+
+            // Unlock Levels
+            const lvl2Locked = score < 150;
+            const lvl3Locked = score < 400;
+
+            const card2 = document.getElementById('lvlCard2');
+            const card3 = document.getElementById('lvlCard3');
+
+            if (!lvl2Locked) {
+                card2.classList.remove('locked');
+                document.getElementById('lock2').style.display = 'none';
+            }
+            if (!lvl3Locked) {
+                card3.classList.remove('locked');
+                document.getElementById('lock3').style.display = 'none';
             }
 
-            const modal = document.getElementById('feedbackModal');
-            const modalCard = document.getElementById('modalCard');
-            const icon = document.getElementById('feedbackIcon');
-            const title = document.getElementById('feedbackTitle');
-            const subtitle = document.getElementById('feedbackSubtitle');
-            const stepsEl = document.getElementById('solutionSteps');
+            // Progress Bar (towards 400 pts)
+            let percent = Math.min((score / 400) * 100, 100);
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressText').innerText = `${score} / 400 оноо`;
 
-            if (isCorrect) {
-                playSound('correct');
-                const diffMultiplier = selectedDifficulty === 'advanced' ? 3 : (selectedDifficulty === 'standard' ? 2 : 1);
-                score += (10 + streak * 2) * diffMultiplier;
-                streak++;
-                if (streak > maxStreak) maxStreak = streak;
-                correctCount++;
+            // User Level Badge
+            let rank = "Анхан";
+            if (score >= 400) rank = "Мастер 🏆";
+            else if (score >= 150) rank = "Ахисан 🌟";
+            document.getElementById('userLevel').innerText = rank;
+        }
 
-                modalCard.className = "glass-panel rounded-3xl p-6 md:p-8 max-w-lg w-full border border-emerald-500/50 shadow-2xl space-y-5 pop-in";
-                icon.innerText = "🎉";
-                title.innerText = "Маш сайн! Зөв бодлоо.";
-                title.className = "text-2xl font-extrabold text-emerald-400";
-                subtitle.innerText = `+${(10 + streak * 2) * diffMultiplier} оноо цуглуулав!`;
+        function selectLevel(lvl) {
+            let score = parseInt(localStorage.getItem(`math_score_${currentUser}`)) || 0;
+            if (lvl === 2 && score < 150) return alert("Level 2-ийг нээхийн тулд 150 оноо цуглуулна уу!");
+            if (lvl === 3 && score < 400) return alert("Level 3-ийг нээхийн тулд 400 оноо цуглуулна уу!");
 
-                try {
-                    confetti({ particleCount: 50, spread: 70, origin: { y: 0.7 } });
-                } catch(e){}
+            currentLevel = lvl;
+            document.querySelectorAll('.level-card').forEach((c, idx) => {
+                c.classList.toggle('active', idx + 1 === lvl);
+            });
+
+            generateQuestion();
+        }
+
+        function generateQuestion() {
+            document.getElementById('explanationBox').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'none';
+
+            const pool = questionsDB[currentLevel];
+            currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+            document.getElementById('problemText').innerText = currentQuestion.q;
+            document.getElementById('topicTag').innerText = `Шат: Level ${currentLevel}`;
+
+            const grid = document.getElementById('optionsGrid');
+            grid.innerHTML = '';
+            
+            currentQuestion.opts.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(idx, btn);
+                grid.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx, btnElement) {
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            let score = parseInt(localStorage.getItem(`math_score_${currentUser}`)) || 0;
+
+            if (selectedIdx === currentQuestion.a) {
+                btnElement.style.background = 'var(--accent-green)';
+                btnElement.style.borderColor = 'var(--accent-green)';
+                
+                score += (currentLevel * 10); // Higher level gives more points
+                localStorage.setItem(`math_score_${currentUser}`, score);
+                
+                confetti({ particleCount: 60, spread: 60, origin: { y: 0.7 } });
             } else {
-                playSound('wrong');
-                streak = 0;
-                modalCard.className = "glass-panel rounded-3xl p-6 md:p-8 max-w-lg w-full border border-pink-500/50 shadow-2xl space-y-5 shake";
-                icon.innerText = "❌";
-                title.innerText = "Буруу байна!";
-                title.className = "text-2xl font-extrabold text-pink-400";
-                subtitle.innerText = `Зөв хариу нь: ${currentQuestion.answer}`;
+                btnElement.style.background = 'var(--accent-red)';
+                btnElement.style.borderColor = 'var(--accent-red)';
+                allBtns[currentQuestion.a].style.background = 'var(--accent-green)';
             }
 
-            stepsEl.innerHTML = currentQuestion.solution;
-            if (window.MathJax) {
-                MathJax.typesetPromise([stepsEl]).catch(err => console.log(err));
-            }
+            document.getElementById('explanationText').innerText = currentQuestion.exp;
+            document.getElementById('explanationBox').style.display = 'block';
+            document.getElementById('nextBtn').style.display = 'inline-block';
 
-            updateStatsHeader();
-            modal.classList.remove('hidden');
+            updateUI(score);
         }
-
-        function nextQuestion() {
-            document.getElementById('feedbackModal').classList.add('hidden');
-            loadNextQuestion();
-        }
-
-        function finishQuiz() {
-            clearInterval(timerInterval);
-            showScreen('summary');
-
-            const accuracy = Math.round((correctCount / totalQuestions) * 100);
-            document.getElementById('finalScore').innerText = score;
-            document.getElementById('finalAccuracy').innerText = `${accuracy}%`;
-            document.getElementById('finalStreak').innerText = `${maxStreak} 🔥`;
-
-            const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
-            const secs = String(secondsElapsed % 60).padStart(2, '0');
-            document.getElementById('finalTime').innerText = `${mins}:${secs}`;
-
-            // Set Rank
-            const rewardTitle = document.getElementById('rewardTitle');
-            const badgeEl = document.getElementById('summaryBadge');
-
-            if (accuracy === 100) {
-                badgeEl.innerText = "👑";
-                rewardTitle.innerText = "🌟 ЭЕШ-ийн 800 Онооны Мастер";
-            } else if (accuracy >= 80) {
-                badgeEl.innerText = "🥇";
-                rewardTitle.innerText = "🥇 Математик Ахисан Түвшний Сертификат";
-            } else if (accuracy >= 50) {
-                badgeEl.innerText = "🥈";
-                rewardTitle.innerText = "🥈 Математикийн Сорилтыг Давагч";
-            } else {
-                badgeEl.innerText = "📖";
-                rewardTitle.innerText = "🌱 Дахин Дасгал Хийх Шаардлагатай";
-            }
-        }
-
-        // Initialize default UI state
-        selectGrade(10);
-        selectDifficulty('standard');
     </script>
 </body>
 </html>
