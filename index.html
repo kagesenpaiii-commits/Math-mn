@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Математикийн Мастер - Ахлах Анги & Онооны Систем</title>
+    <title>Математикийн Мастер 3.0 - Ахлах Анги</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif !important;
+        }
+
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --secondary: #06b6d4;
-            --bg-dark: #0f172a;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0891b2;
+            --bg-color: #0f172a;
             --card-bg: #1e293b;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
@@ -20,22 +27,15 @@
             --gold: #f59e0b;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Login Modal */
+        /* Modal */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -49,23 +49,18 @@
         .login-card {
             background: var(--card-bg);
             padding: 2.5rem;
-            border-radius: 20px;
+            border-radius: 16px;
             width: 90%;
             max-width: 420px;
             text-align: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .login-card h2 {
-            margin-bottom: 1rem;
-            color: #fff;
+            border: 1px solid #334155;
         }
 
         .login-input {
             width: 100%;
             padding: 12px 15px;
-            border-radius: 10px;
+            border-radius: 8px;
             border: 2px solid #334155;
             background: #0f172a;
             color: #fff;
@@ -74,11 +69,7 @@
             outline: none;
         }
 
-        .login-input:focus {
-            border-color: var(--primary);
-        }
-
-        /* Navbar & Stats */
+        /* Header */
         header {
             background: var(--card-bg);
             padding: 1rem 2rem;
@@ -93,7 +84,7 @@
         .logo-title {
             font-size: 1.4rem;
             font-weight: bold;
-            color: var(--secondary);
+            color: #38bdf8;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -109,28 +100,34 @@
             border: 1px solid #334155;
         }
 
-        .stat-badge {
+        /* Navigation Tabs */
+        .nav-tabs {
             display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: bold;
+            justify-content: center;
+            gap: 10px;
+            background: #1e293b;
+            padding: 10px;
+            border-bottom: 1px solid #334155;
         }
 
-        .stat-score { color: var(--gold); }
-        .stat-level { color: var(--secondary); }
-
-        .btn-small {
-            background: #334155;
-            color: #fff;
+        .nav-btn {
+            background: transparent;
             border: none;
-            padding: 5px 12px;
-            border-radius: 15px;
+            color: var(--text-muted);
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.8rem;
+            transition: all 0.3s;
         }
-        .btn-small:hover { background: #475569; }
 
-        /* Main Container */
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Container */
         .container {
             max-width: 1000px;
             margin: 2rem auto;
@@ -139,77 +136,80 @@
             flex: 1;
         }
 
-        /* Level Selector Cards */
-        .level-grid {
+        .view-section {
+            display: none;
+        }
+        .view-section.active {
+            display: block;
+        }
+
+        /* Home View Cards */
+        .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
         }
 
-        .level-card {
+        .menu-card {
             background: var(--card-bg);
             border-radius: 16px;
-            padding: 1.5rem;
+            padding: 2rem;
             border: 2px solid #334155;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.3s;
+            text-align: center;
         }
 
-        .level-card:hover:not(.locked) {
+        .menu-card:hover {
             transform: translateY(-5px);
             border-color: var(--primary);
         }
 
-        .level-card.active {
+        /* Quiz UI */
+        .level-select-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .lvl-btn {
+            background: var(--card-bg);
+            border: 2px solid #334155;
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .lvl-btn.active {
             border-color: var(--secondary);
-            background: rgba(6, 182, 212, 0.1);
+            background: #0284c7;
         }
 
-        .level-card.locked {
-            opacity: 0.6;
-            cursor: not-allowed;
-            background: #111827;
-        }
-
-        .lock-overlay {
-            position: absolute;
-            top: 10px; right: 10px;
-            background: #334155;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #94a3b8;
-        }
-
-        /* Quiz Box */
         .quiz-card {
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            border-radius: 16px;
+            padding: 2rem;
             border: 1px solid #334155;
-            text-align: center;
         }
 
-        .problem-text {
-            font-size: 2rem;
-            margin: 1.5rem 0;
+        .problem-box {
+            background: #0f172a;
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-size: 1.3rem;
             font-weight: bold;
-            color: #fff;
-            min-height: 80px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin: 1.5rem 0;
+            border: 1px solid #334155;
+            line-height: 1.6;
         }
 
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
-            margin-top: 1.5rem;
         }
 
         .option-btn {
@@ -217,59 +217,92 @@
             border: 2px solid #334155;
             color: #fff;
             padding: 1rem;
-            font-size: 1.2rem;
-            border-radius: 12px;
+            font-size: 1.1rem;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s;
+            text-align: left;
         }
 
         .option-btn:hover {
             border-color: var(--primary);
-            background: #1e1b4b;
+        }
+
+        /* Step-by-Step Explanation Box */
+        .detailed-explanation {
+            margin-top: 1.5rem;
+            background: #090d16;
+            border: 2px solid #0284c7;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .explanation-header {
+            color: #38bdf8;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 0.5rem;
+        }
+
+        .step-item {
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+
+        .step-title {
+            color: #f59e0b;
+            font-weight: bold;
+        }
+
+        /* Formula Sheet */
+        .formula-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #334155;
+        }
+
+        .formula-title {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+        }
+
+        /* News Cards */
+        .news-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #334155;
+        }
+
+        .news-title {
+            color: #38bdf8;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
         }
 
         .btn-primary {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 10px;
+            padding: 12px 25px;
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn-primary:hover { background: var(--primary-dark); }
-
-        .explanation-box {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: #0f172a;
-            border-radius: 10px;
-            border-left: 4px solid var(--secondary);
-            text-align: left;
-            display: none;
-        }
-
-        /* Progress Bar */
-        .progress-bar-bg {
-            background: #0f172a;
-            height: 12px;
-            border-radius: 6px;
-            overflow: hidden;
-            margin: 1rem 0;
-        }
-
-        .progress-bar-fill {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s;
         }
 
         @media(max-width: 600px) {
             .options-grid { grid-template-columns: 1fr; }
-            .problem-text { font-size: 1.5rem; }
+            .level-select-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -278,103 +311,257 @@
     <!-- Login Modal -->
     <div class="modal-overlay" id="loginModal">
         <div class="login-card">
-            <i class="fa-solid fa-graduation-cap" style="font-size: 3rem; color: var(--secondary); margin-bottom: 1rem;"></i>
-            <h2>Математикийн Мастер</h2>
-            <p style="color: var(--text-muted);">Сурагчийн нэр эсвэл ID-аа оруулж хичээлээ эхлүүлнэ үү.</p>
-            <input type="text" id="usernameInput" class="login-input" placeholder="Жишээ: Анар-Эрдэнэ (10a)" maxlength="20">
-            <button class="btn-primary" style="width: 100%;" onclick="login()">Эхлэх / Нэвтрэх</button>
+            <i class="fa-solid fa-graduation-cap" style="font-size: 3rem; color: #38bdf8; margin-bottom: 1rem;"></i>
+            <h2>Математикийн Мастер 3.0</h2>
+            <p style="color: var(--text-muted); margin-top: 5px;">Ахлах ангийн сурагчийн нэр / ID</p>
+            <input type="text" id="usernameInput" class="login-input" placeholder="Жишээ: Болд (11а)" maxlength="20">
+            <button class="btn-primary" style="width: 100%;" onclick="login()">Нэвтрэх / Эхлэх</button>
         </div>
     </div>
 
-    <!-- Header Navigation -->
+    <!-- Header -->
     <header>
         <div class="logo-title">
-            <i class="fa-solid fa-calculator"></i> MathMaster MN
+            <i class="fa-solid fa-square-root-variable"></i> MathMaster Ахлах Анги
         </div>
         <div class="user-profile">
-            <div class="stat-badge stat-level">
-                <i class="fa-solid fa-award"></i> <span id="userLevel">Level 1</span>
-            </div>
-            <div class="stat-badge stat-score">
+            <div style="color: var(--gold); font-weight: bold;">
                 <i class="fa-solid fa-star"></i> <span id="userScore">0</span> оноо
             </div>
-            <div class="stat-badge" style="color: #fff;">
+            <div style="color: #fff; font-weight: bold;">
                 <i class="fa-solid fa-user"></i> <span id="displayName">...</span>
             </div>
-            <button class="btn-small" onclick="logout()">Солих</button>
+            <button style="background: #334155; color: #fff; border: none; padding: 4px 10px; border-radius: 10px; cursor: pointer;" onclick="logout()">Солих</button>
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button class="nav-btn active" onclick="switchView('homeView', this)"><i class="fa-solid fa-house"></i> Эхлэл</button>
+        <button class="nav-btn" onclick="switchView('quizView', this)"><i class="fa-solid fa-pen-to-square"></i> Бодлого бодох</button>
+        <button class="nav-btn" onclick="switchView('formulaView', this)"><i class="fa-solid fa-book-bookmark"></i> Томьёоны лавлах</button>
+        <button class="nav-btn" onclick="switchView('newsView', this)"><i class="fa-solid fa-newspaper"></i> Сонин сайхан</button>
+    </div>
+
+    <!-- Main Container -->
     <div class="container">
-        <!-- Level Unlocking Progress -->
-        <div style="margin-bottom: 1.5rem;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-muted);">
-                <span>Дараагийн шат хүртэлх ахиц:</span>
-                <span id="progressText">0 / 150 оноо</span>
+
+        <!-- 1. HOME VIEW -->
+        <div id="homeView" class="view-section active">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">Математикийн ертөнцөд тайвтай морил!</h1>
+                <p style="color: var(--text-muted);">Өөрийн түвшинд тохирсон бодлогыг бодож, оноо цуглуулан мэдлэгээ тэлээрэй.</p>
             </div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="progressBar"></div>
+
+            <div class="menu-grid">
+                <div class="menu-card" onclick="switchView('quizView', document.querySelectorAll('.nav-btn')[1])">
+                    <i class="fa-solid fa-calculator" style="font-size: 2.5rem; color: #38bdf8; margin-bottom: 1rem;"></i>
+                    <h2>Бодлого Бодох</h2>
+                    <p style="color: var(--text-muted); margin-top: 10px;">10, 11, 12-р анги ба ЭЕШ-ийн бодлогуудыг бодож, дэлгэрэнгүй бодолтыг харах.</p>
+                </div>
+
+                <div class="menu-card" onclick="switchView('formulaView', document.querySelectorAll('.nav-btn')[2])">
+                    <i class="fa-solid fa-book-open" style="font-size: 2.5rem; color: var(--gold); margin-bottom: 1rem;"></i>
+                    <h2>Томьёоны Хураангуй</h2>
+                    <p style="color: var(--text-muted); margin-top: 10px;">Тригонометр, Уламжлал, Интеграл, Логарифмын үндсэн томьёонууд.</p>
+                </div>
+
+                <div class="menu-card" onclick="switchView('newsView', document.querySelectorAll('.nav-btn')[3])">
+                    <i class="fa-solid fa-lightbulb" style="font-size: 2.5rem; color: var(--accent-green); margin-bottom: 1rem;"></i>
+                    <h2>Сонирхолтой Мэдээ</h2>
+                    <p style="color: var(--text-muted); margin-top: 10px;">Математикийн гайхамшигт нууцууд болон сонин баримтууд.</p>
+                </div>
             </div>
         </div>
 
-        <!-- Level Cards -->
-        <div class="level-grid">
-            <div class="level-card active" id="lvlCard1" onclick="selectLevel(1)">
-                <h3>Level 1: 10-р Анги</h3>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">Тригонометр, Илтгэгч функц, Тэгшитгэл</p>
+        <!-- 2. QUIZ VIEW -->
+        <div id="quizView" class="view-section">
+            <div class="level-select-grid">
+                <button class="lvl-btn active" id="btnLvl1" onclick="selectLevel(1)">10-р Анги</button>
+                <button class="lvl-btn" id="btnLvl2" onclick="selectLevel(2)">11-р Анги</button>
+                <button class="lvl-btn" id="btnLvl3" onclick="selectLevel(3)">12-р Анги & ЭЕШ</button>
             </div>
-            <div class="level-card locked" id="lvlCard2" onclick="selectLevel(2)">
-                <div class="lock-overlay" id="lock2"><i class="fa-solid fa-lock"></i> 150 оноо хэрэгтэй</div>
-                <h3>Level 2: 11-р Анги</h3>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">Логарифм, Уламжлал, Матриц</p>
-            </div>
-            <div class="level-card locked" id="lvlCard3" onclick="selectLevel(3)">
-                <div class="lock-overlay" id="lock3"><i class="fa-solid fa-lock"></i> 400 оноо хэрэгтэй</div>
-                <h3>Level 3: ЭЕШ Мастер</h3>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">Интеграл, Магадлал, Комплекс тоо</p>
+
+            <div class="quiz-card">
+                <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem;">
+                    <span id="quizLvlTag">Сэдэв: 10-р анги</span>
+                    <span>Arial Форматтай Тоон бичиглэл</span>
+                </div>
+
+                <div class="problem-box" id="problemText">Бодлого ачаалж байна...</div>
+
+                <div class="options-grid" id="optionsGrid"></div>
+
+                <!-- Detailed Step-by-Step Explanation -->
+                <div class="detailed-explanation" id="explanationBox">
+                    <div class="explanation-header">
+                        <i class="fa-solid fa-circle-check"></i> Алхам Алхмаар Дэлгэрэнгүй Бодолт:
+                    </div>
+                    <div id="explanationContent"></div>
+                </div>
+
+                <div style="text-align: right; margin-top: 1.5rem;">
+                    <button class="btn-primary" id="nextBtn" style="display: none;" onclick="generateQuestion()">Дараагийн бодлого ➔</button>
+                </div>
             </div>
         </div>
 
-        <!-- Quiz Container -->
-        <div class="quiz-card">
-            <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem;">
-                <span id="topicTag">Сэдэв: Бааз</span>
-                <span id="difficultyTag">Түвшин: Анхан</span>
+        <!-- 3. FORMULA VIEW -->
+        <div id="formulaView" class="view-section">
+            <h2 style="margin-bottom: 1.5rem; color: #38bdf8;">Ахлах Ангийн Томьёоны Хураангуй</h2>
+            
+            <div class="formula-card">
+                <div class="formula-title">1. Тригонометр (Үндсэн адилтгалууд)</div>
+                <p>• sin^2(x) + cos^2(x) = 1</p>
+                <p>• tan(x) = sin(x) / cos(x)</p>
+                <p>• sin(2x) = 2 * sin(x) * cos(x)</p>
+                <p>• cos(2x) = cos^2(x) - sin^2(x)</p>
             </div>
 
-            <div class="problem-text" id="problemText">Бодлого ачаалж байна...</div>
-
-            <div class="options-grid" id="optionsGrid">
-                <!-- Options populated dynamically -->
+            <div class="formula-card">
+                <div class="formula-title">2. Логарифм ба Илтгэгч</div>
+                <p>• log_a(b * c) = log_a(b) + log_a(c)</p>
+                <p>• log_a(b / c) = log_a(b) - log_a(c)</p>
+                <p>• log_a(b^k) = k * log_a(b)</p>
+                <p>• a^(log_a(b)) = b</p>
             </div>
 
-            <div class="explanation-box" id="explanationBox">
-                <strong>💡 Бодолтын тайлбар:</strong>
-                <p id="explanationText" style="margin-top: 5px; color: #cbd5e1;"></p>
+            <div class="formula-card">
+                <div class="formula-title">3. Уламжлал (Elementary Derivatives)</div>
+                <p>• (x^n)' = n * x^(n-1)</p>
+                <p>• (sin x)' = cos x</p>
+                <p>• (cos x)' = -sin x</p>
+                <p>• (e^x)' = e^x</p>
+                <p>• (ln x)' = 1 / x</p>
             </div>
 
-            <button class="btn-primary" id="nextBtn" style="margin-top: 1.5rem; display: none;" onclick="generateQuestion()">Дараагийн бодлого ➔</button>
+            <div class="formula-card">
+                <div class="formula-title">4. Эх функц ба Интеграл</div>
+                <p>• ∫ x^n dx = (x^(n+1)) / (n+1) + C  (n ≠ -1)</p>
+                <p>• ∫ (1/x) dx = ln|x| + C</p>
+                <p>• ∫ sin(x) dx = -cos(x) + C</p>
+                <p>• ∫ cos(x) dx = sin(x) + C</p>
+            </div>
         </div>
+
+        <!-- 4. NEWS VIEW -->
+        <div id="newsView" class="view-section">
+            <h2 style="margin-bottom: 1.5rem; color: var(--accent-green);">Математикийн Сонирхолтой Сонин Сайхан</h2>
+
+            <div class="news-card">
+                <div class="news-title">✨ Алтан харьцаа (Golden Ratio) гэж юу вэ?</div>
+                <p style="color: #cbd5e1; line-height: 1.6;">
+                    Алтан харьцаа нь ойролцоогоор 1.618-тай тэнцэх тоо юм. Байгаль дээрх наранцэцгийн үрийн байрлал, эмбрионы хуваагдал, мөн Леонардо да Винчигийн "Мона Лиза" зурагт хүртэл энэхүү харьцаа ашиглагдсан байдаг. Энэ нь хүний нүдэнд хамгийн төгс, зохицолтой харагддаг хэмжээс юм.
+                </p>
+            </div>
+
+            <div class="news-card">
+                <div class="news-title">🥧 Пи (π) тооны нууц ба хязгааргүй чанар</div>
+                <p style="color: #cbd5e1; line-height: 1.6;">
+                    Пи тоо нь тойргийн уртыг түүний диаметрт харьцуулсан харьцаа юм. Пи тооны таслалаас хойших цифрүүд хэзээ ч давтагдахгүй бөгөөд хязгааргүй үргэлжилдэг. Супер компьютерүүд одоогоор 100 их наяд гаруй цифрийг нь бодож олсон ч төгсгөл нь олдоогүй байна!
+                </p>
+            </div>
+
+            <div class="news-card">
+                <div class="news-title">💰 Мянганы шагналын 7 бодлого (1 сая доллар)</div>
+                <p style="color: #cbd5e1; line-height: 1.6;">
+                    Клейн Математикийн Хүрээлэнгээс 2000 онд шийдэгдээгүй хамгийн хүнд 7 бодлогыг зарлаж, бодлого тус бүрийг бодсон хүнд 1,000,000 ам.долларын шагнал амласан. Одоогоор зөвхөн "Пуанкарегийн таамаглал" гэх бодлогыг Оросын математикч Григорий Перельман бодож чадсан юм.
+                </p>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // Database of Questions
+        // Expanded Problem Set with Detailed Step-by-Step Solutions
         const questionsDB = {
-            1: [ // Grade 10
-                { q: "\\sin(30^\\circ) - \\cos(60^\\circ) = ?", opts: ["0", "1", "1/2", "-1"], a: 0, exp: "sin(30°) = 1/2 болон cos(60°) = 1/2 учир 1/2 - 1/2 = 0 болно." },
-                { q: "2^x = 32 бол x-ийн утгыг ол.", opts: ["4", "5", "6", "3"], a: 1, exp: "32 нь 2-ын 5 зэрэгт учир 2^x = 2^5 => x = 5." },
-                { q: "x^2 - 9 = 0 тэгшитгэлийн шийдийг ол.", opts: ["x = 3", "x = -3", "x = ±3", "x = 9"], a: 2, exp: "x^2 = 9 тул x = ±√9 = ±3." }
+            1: [ // 10th Grade
+                {
+                    q: "sin(30°) + cos(60°) - tan(45°) илэрхийллийн утгыг ол.",
+                    opts: ["0", "1", "1/2", "2"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл ба Томьёо:", d: "Тригонометр үндсэн өнцгүүдийн утга: sin(30°) = 1/2, cos(60°) = 1/2, tan(45°) = 1." },
+                        { t: "Алхам 1:", d: "Олсон утгуудыг илэрхийлэлд орлуулна: (1/2) + (1/2) - 1" },
+                        { t: "Алхам 2:", d: "(1/2 + 1/2) = 1 тул 1 - 1 = 0 болно." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: 0" }
+                    ]
+                },
+                {
+                    q: "2^(x + 1) = 32 бол x-ийн утгыг ол.",
+                    opts: ["x = 4", "x = 5", "x = 3", "x = 6"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл:", d: "Илтгэгч тэгшитгэл: 2^(x + 1) = 32" },
+                        { t: "Алхам 1:", d: "32 тоог 2-ын суурьтай зэрэгт шилжүүлбэл: 32 = 2^5." },
+                        { t: "Алхам 2:", d: "Сууриуд адилхан тул илтгэгчдийг тэнцүүлнэ: x + 1 = 5." },
+                        { t: "Алхам 3:", d: "x = 5 - 1 => x = 4." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: x = 4" }
+                    ]
+                },
+                {
+                    q: "x^2 - 5x + 6 = 0 квадрат тэгшитгэлийн шийдүүдийг ол.",
+                    opts: ["x1 = 2, x2 = 3", "x1 = -2, x2 = -3", "x1 = 1, x2 = 6", "x1 = -1, x2 = 5"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл ба Томьёо:", d: "Виетийн теорем: x1 + x2 = 5 болон x1 * x2 = 6." },
+                        { t: "Алхам 1:", d: "Үржвэр нь 6, нийлбэр нь 5 байх хоёр тоог олно." },
+                        { t: "Алхам 2:", d: "2 ба 3 тоонуудын үржвэр 2*3=6, нийлбэр 2+3=5 тул шийдүүд мөн." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: x1 = 2, x2 = 3" }
+                    ]
+                }
             ],
-            2: [ // Grade 11
-                { q: "\\log_2(16) = ?", opts: ["2", "4", "8", "16"], a: 1, exp: "2^4 = 16 учир log_2(16) = 4 байна." },
-                { q: "f(x) = 3x^2 + 5x функцийн уламжлалыг ол.", opts: ["6x + 5", "3x + 5", "6x^2", "5x"], a: 0, exp: "(x^n)' = n*x^(n-1) томьёогоор (3x^2)' = 6x, (5x)' = 5 тул 6x + 5 болно." },
-                { q: "\\sin^2(x) + \\cos^2(x) = ?", opts: ["0", "1", "2", "\\tan(x)"], a: 1, exp: "Тригонометрийн үндсэн адилтгалаар sin²(x) + cos²(x) = 1 байдаг." }
+            2: [ // 11th Grade
+                {
+                    q: "log_2(x) + log_2(4) = 5 бол x-ийн утгыг ол.",
+                    opts: ["x = 8", "x = 16", "x = 32", "x = 4"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл ба Томьёо:", d: "Логарифмын чанар: log_a(b) + log_a(c) = log_a(b * c)" },
+                        { t: "Алхам 1:", d: "Зүүн талыг нэгтгэвэл: log_2(4 * x) = 5." },
+                        { t: "Алхам 2:", d: "Логарифмын тодорхойлолтоор: 4 * x = 2^5 => 4 * x = 32." },
+                        { t: "Алхам 3:", d: "x = 32 / 4 => x = 8." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: x = 8" }
+                    ]
+                },
+                {
+                    q: "f(x) = 4x^3 - 2x^2 + 7 функцийн уламжлал f'(x)-ийг ол.",
+                    opts: ["12x^2 - 4x", "12x^2 - 4x + 7", "4x^2 - 2x", "8x^2 - 4x"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл ба Томьёо:", d: "Зэрэгт функцийн уламжлал: (x^n)' = n * x^(n-1), сул тооны уламжлал 0 байдаг." },
+                        { t: "Алхам 1:", d: "(4x^3)' = 4 * 3 * x^2 = 12x^2." },
+                        { t: "Алхам 2:", d: "(-2x^2)' = -2 * 2 * x = -4x." },
+                        { t: "Алхам 3:", d: "(7)' = 0." },
+                        { t: "Эцсийн хариу:", d: "f'(x) = 12x^2 - 4x" }
+                    ]
+                }
             ],
-            3: [ // Grade 12 / EESH
-                { q: "\\int 2x dx = ?", opts: ["x^2 + C", "2x^2 + C", "x + C", "2 + C"], a: 0, exp: "Эх функц олохдоо зэрэг дээр 1-ийг нэмж зэрэгт хуваана: 2*(x^2)/2 = x^2 + C." },
-                { q: "4 элементээс 2-ыг сонгох хослолын тоо C(4,2) = ?", opts: ["6", "12", "8", "4"], a: 0, exp: "C(4,2) = 4! / (2! * 2!) = (4*3)/2 = 6." },
-                { q: "i^2 -ийн утга юу вэ? (i нь комплекс нэгж)", opts: ["1", "-1", "0", "i"], a: 1, exp: "Комплекс тооны тодорхойлолтоор i = √(-1) учир i^2 = -1 байна." }
+            3: [ // 12th Grade & EESH
+                {
+                    q: "∫ (3x^2 + 4x) dx тодорхойгүй интегралыг бод.",
+                    opts: ["x^3 + 2x^2 + C", "3x^3 + 4x^2 + C", "6x + 4 + C", "x^3 + 4x^2 + C"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл ба Томьёо:", d: "Интегралын үндсэн томьёо: ∫ x^n dx = x^(n+1) / (n+1) + C" },
+                        { t: "Алхам 1:", d: "∫ 3x^2 dx = 3 * (x^3 / 3) = x^3." },
+                        { t: "Алхам 2:", d: "∫ 4x dx = 4 * (x^2 / 2) = 2x^2." },
+                        { t: "Алхам 3:", d: "Нийлбэрийг бичээд C тогтмолыг нэмнэ." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: x^3 + 2x^2 + C" }
+                    ]
+                },
+                {
+                    q: "5 элементтэй олонлогтоос 2 элементийг сонгох хослолын тоо C(5,2)-ийг ол.",
+                    opts: ["10", "20", "60", "5"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл ба Томьёо:", d: "Хослолын томьёо: C(n, k) = n! / (k! * (n - k)!)" },
+                        { t: "Алхам 1:", d: "C(5,2) = 5! / (2! * 3!)" },
+                        { t: "Алхам 2:", d: "5! / 3! = 5 * 4 = 20." },
+                        { t: "Алхам 3:", d: "20 / 2! = 20 / 2 = 10." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: 10" }
+                    ]
+                }
             ]
         };
 
@@ -382,9 +569,8 @@
         let currentLevel = 1;
         let currentQuestion = null;
 
-        // Load saved state
         window.onload = function() {
-            const savedName = localStorage.getItem('math_username');
+            const savedName = localStorage.getItem('math_username_v3');
             if (savedName) {
                 loadUserData(savedName);
             } else {
@@ -393,11 +579,10 @@
         };
 
         function login() {
-            const nameInput = document.getElementById('usernameInput').value.trim();
-            if (!nameInput) return alert("Нэрээ оруулна уу!");
-            
-            localStorage.setItem('math_username', nameInput);
-            loadUserData(nameInput);
+            const val = document.getElementById('usernameInput').value.trim();
+            if (!val) return alert("Нэрээ оруулна уу!");
+            localStorage.setItem('math_username_v3', val);
+            loadUserData(val);
             document.getElementById('loginModal').style.display = 'none';
         }
 
@@ -408,53 +593,25 @@
         function loadUserData(name) {
             currentUser = name;
             document.getElementById('displayName').innerText = name;
-            
-            let score = parseInt(localStorage.getItem(`math_score_${name}`)) || 0;
-            updateUI(score);
+            let score = parseInt(localStorage.getItem(`math_score_v3_${name}`)) || 0;
+            document.getElementById('userScore').innerText = score;
             generateQuestion();
         }
 
-        function updateUI(score) {
-            document.getElementById('userScore').innerText = score;
+        function switchView(viewId, btnElement) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
 
-            // Unlock Levels
-            const lvl2Locked = score < 150;
-            const lvl3Locked = score < 400;
-
-            const card2 = document.getElementById('lvlCard2');
-            const card3 = document.getElementById('lvlCard3');
-
-            if (!lvl2Locked) {
-                card2.classList.remove('locked');
-                document.getElementById('lock2').style.display = 'none';
-            }
-            if (!lvl3Locked) {
-                card3.classList.remove('locked');
-                document.getElementById('lock3').style.display = 'none';
-            }
-
-            // Progress Bar (towards 400 pts)
-            let percent = Math.min((score / 400) * 100, 100);
-            document.getElementById('progressBar').style.width = percent + '%';
-            document.getElementById('progressText').innerText = `${score} / 400 оноо`;
-
-            // User Level Badge
-            let rank = "Анхан";
-            if (score >= 400) rank = "Мастер 🏆";
-            else if (score >= 150) rank = "Ахисан 🌟";
-            document.getElementById('userLevel').innerText = rank;
+            document.getElementById(viewId).classList.add('active');
+            if(btnElement) btnElement.classList.add('active');
         }
 
         function selectLevel(lvl) {
-            let score = parseInt(localStorage.getItem(`math_score_${currentUser}`)) || 0;
-            if (lvl === 2 && score < 150) return alert("Level 2-ийг нээхийн тулд 150 оноо цуглуулна уу!");
-            if (lvl === 3 && score < 400) return alert("Level 3-ийг нээхийн тулд 400 оноо цуглуулна уу!");
-
             currentLevel = lvl;
-            document.querySelectorAll('.level-card').forEach((c, idx) => {
-                c.classList.toggle('active', idx + 1 === lvl);
+            document.querySelectorAll('.lvl-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i + 1 === lvl);
             });
-
+            document.getElementById('quizLvlTag').innerText = `Сэдэв: ${lvl === 3 ? '12-р анги & ЭЕШ' : lvl + '10-р анги'}`;
             generateQuestion();
         }
 
@@ -466,15 +623,14 @@
             currentQuestion = pool[Math.floor(Math.random() * pool.length)];
 
             document.getElementById('problemText').innerText = currentQuestion.q;
-            document.getElementById('topicTag').innerText = `Шат: Level ${currentLevel}`;
 
             const grid = document.getElementById('optionsGrid');
             grid.innerHTML = '';
-            
+
             currentQuestion.opts.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerText = opt;
+                btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
                 btn.onclick = () => checkAnswer(idx, btn);
                 grid.appendChild(btn);
             });
@@ -484,27 +640,34 @@
             const allBtns = document.querySelectorAll('.option-btn');
             allBtns.forEach(b => b.disabled = true);
 
-            let score = parseInt(localStorage.getItem(`math_score_${currentUser}`)) || 0;
+            let score = parseInt(localStorage.getItem(`math_score_v3_${currentUser}`)) || 0;
 
             if (selectedIdx === currentQuestion.a) {
                 btnElement.style.background = 'var(--accent-green)';
                 btnElement.style.borderColor = 'var(--accent-green)';
-                
-                score += (currentLevel * 10); // Higher level gives more points
-                localStorage.setItem(`math_score_${currentUser}`, score);
-                
-                confetti({ particleCount: 60, spread: 60, origin: { y: 0.7 } });
+                score += 15;
+                localStorage.setItem(`math_score_v3_${currentUser}`, score);
+                document.getElementById('userScore').innerText = score;
+                confetti({ particleCount: 50, spread: 60 });
             } else {
                 btnElement.style.background = 'var(--accent-red)';
                 btnElement.style.borderColor = 'var(--accent-red)';
                 allBtns[currentQuestion.a].style.background = 'var(--accent-green)';
             }
 
-            document.getElementById('explanationText').innerText = currentQuestion.exp;
+            // Render Step-by-Step Explanation
+            const expContent = document.getElementById('explanationContent');
+            expContent.innerHTML = '';
+            
+            currentQuestion.steps.forEach(s => {
+                const div = document.createElement('div');
+                div.className = 'step-item';
+                div.innerHTML = `<span class="step-title">${s.t}</span> ${s.d}`;
+                expContent.appendChild(div);
+            });
+
             document.getElementById('explanationBox').style.display = 'block';
             document.getElementById('nextBtn').style.display = 'inline-block';
-
-            updateUI(score);
         }
     </script>
 </body>
