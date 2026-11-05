@@ -148,11 +148,12 @@
         .slider-container {
             position: relative;
             width: 100%;
-            height: 240px;
+            height: 260px;
             border-radius: 16px;
             overflow: hidden;
             margin-bottom: 2rem;
             border: 2px solid #334155;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
         .slide {
@@ -174,11 +175,13 @@
         .slide-1 { background: linear-gradient(135deg, #1e1b4b, #4338ca); }
         .slide-2 { background: linear-gradient(135deg, #0f766e, #0369a1); }
         .slide-3 { background: linear-gradient(135deg, #831843, #be123c); }
+        .slide-4 { background: linear-gradient(135deg, #7c2d12, #c2410c); }
+        .slide-5 { background: linear-gradient(135deg, #365314, #15803d); }
 
-        .slide h2 { font-size: 2rem; margin-bottom: 0.5rem; color: #fff; }
-        .slide p { font-size: 1.1rem; color: #e2e8f0; max-width: 600px; }
+        .slide h2 { font-size: 2.2rem; margin-bottom: 0.8rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .slide p { font-size: 1.15rem; color: #f1f5f9; max-width: 650px; line-height: 1.5; }
 
-        /* Level & Difficulty Selectors */
+        /* Grade & Difficulty Selectors */
         .grade-tabs {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -331,6 +334,7 @@
             .options-grid { grid-template-columns: 1fr; }
             .grade-tabs { grid-template-columns: 1fr; }
             .difficulty-container { flex-direction: column; }
+            .slide h2 { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -360,7 +364,7 @@
         </div>
     </header>
 
-    <!-- Navigation Tabs (Cleaned without broken icons) -->
+    <!-- Navigation Tabs -->
     <div class="nav-tabs">
         <button class="nav-btn active" onclick="switchView('homeView', this)">Эхлэл</button>
         <button class="nav-btn" onclick="switchView('quizView', this)">Бодлого бодох</button>
@@ -370,21 +374,28 @@
 
     <div class="container">
 
-        <!-- 1. HOME VIEW WITH AUTO-SLIDER -->
+        <!-- 1. HOME VIEW WITH AUTO-SLIDER (5 Slides) -->
         <div id="homeView" class="view-section active">
-            <!-- Animated Banner Slider -->
             <div class="slider-container">
                 <div class="slide slide-1 active">
                     <h2>🎯 Математикийн ЭЕШ-д бэлдээрэй</h2>
-                    <p>Түвшин бүрийн бодлогуудыг бодож, дэлгэрэнгүй бодолтоос суралцаарай.</p>
+                    <p>10, 11, 12-р ангийн бодлогуудыг түвшин ахиулан бодож, дэлгэрэнгүй бодолтоос суралцаарай.</p>
                 </div>
                 <div class="slide slide-2">
                     <h2>🏆 Оноо цуглуулж Хүнд үеийг нээ</h2>
-                    <p>Анги бүрээс 50+ оноо цуглуулан хамгийн хүнд Олимпиадын түвшнийг тайлаарай.</p>
+                    <p>Анги бүрээс 50+ оноо цуглуулан хамгийн хүнд Олимпиадын бодлогуудыг тайлах боломжтой.</p>
                 </div>
                 <div class="slide slide-3">
                     <h2>📚 Томьёоны Хураангуй Лавлах</h2>
-                    <p>Тригонометр, Логарифм, Уламжлал ба Интегралын үндсэн томьёонуудыг нэг дор.</p>
+                    <p>Тригонометр, Логарифм, Уламжлал ба Интегралын үндсэн томьёонууд нэг дор.</p>
+                </div>
+                <div class="slide slide-4">
+                    <h2>💡 Мянганы шагналын 7 бодлого</h2>
+                    <p>Математикийн ертөнц дэх хамгийн нууцлаг, шийдэгдээгүй 1 сая долларын бодлогуудын тухай сонирхоорой.</p>
+                </div>
+                <div class="slide slide-5">
+                    <h2>⚡ Алхам алхмаар дэлгэрэнгүй бодолт</h2>
+                    <p>Бодлого бүрийн дараа өгөгдөл, ашиглах томьёо, алхам алхмын шийдлийг дэлгэрэнгүй харуулна.</p>
                 </div>
             </div>
 
@@ -398,21 +409,18 @@
         <!-- 2. QUIZ VIEW -->
         <div id="quizView" class="view-section">
             
-            <!-- Grade Selection -->
             <div class="grade-tabs">
                 <button class="grade-btn active" id="btnGrade10" onclick="selectGrade(10)">10-р Анги</button>
                 <button class="grade-btn" id="btnGrade11" onclick="selectGrade(11)">11-р Анги</button>
                 <button class="grade-btn" id="btnGrade12" onclick="selectGrade(12)">12-р Анги & ЭЕШ</button>
             </div>
 
-            <!-- Difficulty Selector -->
             <div class="difficulty-container">
                 <div class="diff-btn active" id="diffEasy" onclick="selectDifficulty('easy')">🟢 Хялбар (+10 оноо)</div>
                 <div class="diff-btn" id="diffMedium" onclick="selectDifficulty('medium')">🟡 Дунд (+15 оноо)</div>
                 <div class="diff-btn locked" id="diffHard" onclick="selectDifficulty('hard')">🔒 Хүнд (50 оноо хэрэгтэй)</div>
             </div>
 
-            <!-- Quiz Card -->
             <div class="quiz-card">
                 <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem;">
                     <span id="quizInfoTag">10-р анги | Хялбар шат</span>
@@ -476,7 +484,6 @@
     </div>
 
     <script>
-        // Database structured by Grade and Difficulty
         const database = {
             10: {
                 easy: [
@@ -550,7 +557,7 @@
                         q: "$C(6,2)$ хослолын тоог ол.",
                         opts: ["$15$", "$30$", "$12$", "$20$"],
                         a: 0,
-                        steps: [{ t: "Бодолt:", d: "$C(6,2) = \\frac{6 \\cdot 5}{2} = 15$." }]
+                        steps: [{ t: "Бодолт:", d: "$C(6,2) = \\frac{6 \\cdot 5}{2} = 15$." }]
                     }
                 ],
                 hard: [
@@ -578,7 +585,7 @@
                 slideIndex = (slideIndex + 1) % slides.length;
                 slides[slideIndex].classList.add('active');
             }
-        }, 3500);
+        }, 4000);
 
         window.onload = function() {
             const savedName = localStorage.getItem('math_user_v4');
@@ -631,7 +638,7 @@
         function selectDifficulty(diff) {
             let score = parseInt(localStorage.getItem(`score_g${currentGrade}_${currentUser}`)) || 0;
             if (diff === 'hard' && score < 50) {
-                return alert(`16-аас дээш насныханд эсвэл Хүнд үеийг нээхийн тулд ${currentGrade}-р ангийн оноогоо 50-д хүргэнэ үү! (Одоо: ${score}/50)`);
+                return alert(`Хүнд үеийг нээхийн тулд ${currentGrade}-р ангийн оноогоо 50-д хүргэнэ үү! (Одоо: ${score}/50)`);
             }
 
             currentDiff = diff;
