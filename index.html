@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Математикийн Мастер 3.0</title>
+    <title>Математикийн Мастер - Ахлах Анги</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
-    <!-- MathJax for rendering proper mathematical formulas like x_1 and x^2 -->
+    <!-- MathJax for rendering math symbols like x_1, x^2, fractions -->
     <script>
         MathJax = {
             tex: {
@@ -310,9 +310,9 @@
     <div class="modal-overlay" id="loginModal">
         <div class="login-card">
             <i class="fa-solid fa-graduation-cap" style="font-size: 3rem; color: #38bdf8; margin-bottom: 1rem;"></i>
-            <h2>Математикийн Мастер 3.0</h2>
+            <h2>Математикийн Мастер</h2>
             <p style="color: var(--text-muted); margin-top: 5px;">Ахлах ангийн сурагчийн нэр / ID</p>
-            <input type="text" id="usernameInput" class="login-input" placeholder="Жишээ: Болд (11а)" maxlength="20">
+            <input type="text" id="usernameInput" class="login-input" placeholder="Жишээ: Анар (11а)" maxlength="20">
             <button class="btn-primary" style="width: 100%;" onclick="login()">Нэвтрэх / Эхлэх</button>
         </div>
     </div>
@@ -468,7 +468,7 @@
     </div>
 
     <script>
-        // Questions with LaTeX formatting for proper rendering of x_1 and x^2
+        // Expanded Questions DB
         const questionsDB = {
             1: [
                 {
@@ -503,6 +503,27 @@
                         { t: "Алхам 1:", d: "Үржвэр нь 6, нийлбэр нь 5 байх тоонууд нь 2 ба 3 юм." },
                         { t: "Эцсийн хариу:", d: "Зөв хариулт: $x_1 = 2, x_2 = 3$" }
                     ]
+                },
+                {
+                    q: "Ромбын диагоналиуд $d_1 = 6$ ба $d_2 = 8$ бол түүний талбайг ол.",
+                    opts: ["$24$", "$48$", "$12$", "$30$"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл ба Томьёо:", d: "Ромбын талбай олох томьёо: $S = \\frac{d_1 \\cdot d_2}{2}$" },
+                        { t: "Алхам 1:", d: "Өгөгдсөн утгуудыг орлуулбал: $S = \\frac{6 \\cdot 8}{2} = \\frac{48}{2} = 24$." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $24$" }
+                    ]
+                },
+                {
+                    q: "$3^{2x - 1} = 27$ тэгшитгэлийн шийдийг ол.",
+                    opts: ["$x = 2$", "$x = 1$", "$x = 3$", "$x = 4$"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл:", d: "$3^{2x - 1} = 27$" },
+                        { t: "Алхам 1:", d: "$27 = 3^3$ тул $2x - 1 = 3$ болно." },
+                        { t: "Алхам 2:", d: "$2x = 4 \\Rightarrow x = 2$." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $x = 2$" }
+                    ]
                 }
             ],
             2: [
@@ -529,6 +550,28 @@
                         { t: "Алхам 3:", d: "Сул тооны уламжлал: $(7)' = 0$" },
                         { t: "Эцсийн хариу:", d: "$f'(x) = 12x^2 - 4x$" }
                     ]
+                },
+                {
+                    q: "$\\log_3(x^2 - 1) = 1$ тэгшитгэлийн эерэг шийдийг ол.",
+                    opts: ["$x = 2$", "$x = 3$", "$x = 1$", "$x = 4$"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл:", d: "$\\log_3(x^2 - 1) = 1$" },
+                        { t: "Алхам 1:", d: "$x^2 - 1 = 3^1 \\Rightarrow x^2 - 1 = 3$." },
+                        { t: "Алхам 2:", d: "$x^2 = 4 \\Rightarrow x = \\pm 2$." },
+                        { t: "Алхам 3:", d: "Эерэг шийдийг авбал $x = 2$ болно." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $x = 2$" }
+                    ]
+                },
+                {
+                    q: "Arithmetic прогрессийн $a_1 = 3$, $d = 4$ бол $a_{10}$-ийг ол.",
+                    opts: ["$39$", "$43$", "$36$", "$40$"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл ба Томьёо:", d: "$a_n = a_1 + (n - 1)d$" },
+                        { t: "Алхам 1:", d: "$a_{10} = 3 + (10 - 1) \\cdot 4 = 3 + 9 \\cdot 4 = 3 + 36 = 39$." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $39$" }
+                    ]
                 }
             ],
             3: [
@@ -552,6 +595,28 @@
                         { t: "Алхам 1:", d: "$C(5,2) = \\frac{5!}{2! \\cdot 3!} = \\frac{5 \\cdot 4}{2} = 10$" },
                         { t: "Эцсийн хариу:", d: "Зөв хариулт: $10$" }
                     ]
+                },
+                {
+                    q: "$i^{4} + i^{2}$ комплекс тооны утгыг ол.",
+                    opts: ["$0$", "$1$", "$-1$", "$2$"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл ба Томьёо:", d: "Комплекс тооны нэгж: $i^2 = -1$ ба $i^4 = 1$." },
+                        { t: "Алхам 1:", d: "Утгуудыг байранд нь орлуулбал: $1 + (-1) = 0$." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $0$" }
+                    ]
+                },
+                {
+                    q: "$\\lim_{x \\to 2} \\frac{x^2 - 4}{x - 2}$ хязгаарыг бод.",
+                    opts: ["$4$", "$2$", "$0$", "Хязгааргүй"],
+                    a: 0,
+                    steps: [
+                        { t: "Өгөгдөл:", d: "$\\lim_{x \\to 2} \\frac{x^2 - 4}{x - 2}$" },
+                        { t: "Алхам 1:", d: "Хүртвэрийг задлавал: $x^2 - 4 = (x - 2)(x + 2)$." },
+                        { t: "Алхам 2:", d: "Хуваарьтай хураавал: $\\lim_{x \\to 2} (x + 2)$ болно." },
+                        { t: "Алхам 3:", d: "$x = 2$ орлуулбал: $2 + 2 = 4$." },
+                        { t: "Эцсийн хариу:", d: "Зөв хариулт: $4$" }
+                    ]
                 }
             ]
         };
@@ -559,6 +624,7 @@
         let currentUser = null;
         let currentLevel = 1;
         let currentQuestion = null;
+        let lastQuestionIndex = -1;
 
         window.onload = function() {
             const savedName = localStorage.getItem('math_username_v3');
@@ -596,6 +662,10 @@
             document.getElementById(viewId).classList.add('active');
             if(btnElement) btnElement.classList.add('active');
 
+            if (viewId === 'quizView') {
+                generateQuestion();
+            }
+
             if (window.MathJax) {
                 MathJax.typesetPromise();
             }
@@ -615,18 +685,31 @@
             document.getElementById('nextBtn').style.display = 'none';
 
             const pool = questionsDB[currentLevel];
-            currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+            let randomIndex;
+            
+            // Pick a new random question different from the previous one if pool length > 1
+            do {
+                randomIndex = Math.floor(Math.random() * pool.length);
+            } while (pool.length > 1 && randomIndex === lastQuestionIndex);
+
+            lastQuestionIndex = randomIndex;
+            currentQuestion = pool[randomIndex];
 
             document.getElementById('problemText').innerHTML = currentQuestion.q;
+
+            // Shuffle options for better randomness
+            let indices = [0, 1, 2, 3];
+            indices.sort(() => Math.random() - 0.5);
 
             const grid = document.getElementById('optionsGrid');
             grid.innerHTML = '';
 
-            currentQuestion.opts.forEach((opt, idx) => {
+            indices.forEach((originalIdx, i) => {
+                const opt = currentQuestion.opts[originalIdx];
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerHTML = `<strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}`;
-                btn.onclick = () => checkAnswer(idx, btn);
+                btn.innerHTML = `<strong>${String.fromCharCode(65 + i)}.</strong> ${opt}`;
+                btn.onclick = () => checkAnswer(originalIdx, btn);
                 grid.appendChild(btn);
             });
 
@@ -651,7 +734,6 @@
             } else {
                 btnElement.style.background = 'var(--accent-red)';
                 btnElement.style.borderColor = 'var(--accent-red)';
-                allBtns[currentQuestion.a].style.background = 'var(--accent-green)';
             }
 
             const expContent = document.getElementById('explanationContent');
